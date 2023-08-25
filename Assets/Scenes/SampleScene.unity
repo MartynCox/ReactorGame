@@ -2440,13 +2440,45 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Delegates:
-  - eventID: 2
+  - eventID: 13
     callback:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 1913795851}
           m_TargetAssemblyTypeName: ValveFlow, Assembly-CSharp
-          m_MethodName: TurnValve
+          m_MethodName: BeginDrag
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 14
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1913795851}
+          m_TargetAssemblyTypeName: ValveFlow, Assembly-CSharp
+          m_MethodName: EndDrag
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 5
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1913795851}
+          m_TargetAssemblyTypeName: ValveFlow, Assembly-CSharp
+          m_MethodName: Drag
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -2516,8 +2548,9 @@ MonoBehaviour:
   _closedColor: {r: 0.8396226, g: 0, b: 0, a: 1}
   _disabledColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   _closedAngle: 135
-  _openAngle: -45
+  _maxAngle: -45
   _maximumFlowRate: 4
+  _dragSensitivity: 0.3
 --- !u!1001 &1957864107
 PrefabInstance:
   m_ObjectHideFlags: 0

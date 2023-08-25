@@ -8,6 +8,9 @@ public class SimulationController : MonoBehaviour
     private float _stepTime = 8f;
     private float _timeUntilAdvance;
 
+    [SerializeField]
+    private List<ValveScript> _allValves;
+
     private void Start()
     {
         _timeUntilAdvance = _stepTime;
@@ -30,12 +33,11 @@ public class SimulationController : MonoBehaviour
     {
         _timeUntilAdvance = _stepTime;
         // Find all valves
-        ValveScript[] valves = GameObject.FindObjectsOfType<ValveScript>();
-        foreach (ValveScript v in valves)
+        // ValveScript[] valves = GameObject.FindObjectsOfType<ValveScript>();
+        foreach (ValveScript v in _allValves)
         {
             v.flow();
         }
-        
 
         Debug.Log("advance simulation");
     }

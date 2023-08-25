@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3254460458797127261}
   - component: {fileID: 3254460458797127250}
   - component: {fileID: 3254460458797127263}
+  - component: {fileID: -7297173329923024810}
   m_Layer: 5
   m_Name: Valve1
   m_TagString: Untagged
@@ -90,7 +91,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95ff083295038544ebabea0a9cca664c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FlowRate: 1
   _connectedPipes: []
+  _inflowTanks: []
+  _outflowTanks: []
 --- !u!114 &3254460458797127263
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,3 +124,16 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &-7297173329923024810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3254460458797127248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ab0a5da056f343429e81b573a356e5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pointerTexture: {fileID: 2800000, guid: 4c77372cc3eb6b447b6a47bfd68e42ff, type: 3}

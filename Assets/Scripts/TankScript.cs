@@ -9,6 +9,8 @@ public class TankScript : MonoBehaviour
     [SerializeField] private int _capacity = 0;
 
     [SerializeField] private float _lineThickness = 0.02f;
+    [SerializeField] private int _fillingValves = 0;
+    [SerializeField] private int _drainingValves = 0;
     
 
     // Start is called before the first frame update
@@ -50,5 +52,37 @@ public class TankScript : MonoBehaviour
     public int GetCapacity()
     {
         return _capacity;
+    }
+
+    public bool CanFill(){
+        return _drainingValves == 0;
+    }
+
+    public bool CanDrain(){
+        return _fillingValves == 0;
+    }
+
+    public int AddFillingValve()
+    {
+        _fillingValves++;
+        return _fillingValves;
+    }
+
+    public int RemoveFillingValve()
+    {
+        _fillingValves--;
+        return _fillingValves;
+    }
+
+    public int AddDrainingValve()
+    {
+        _drainingValves++;
+        return _drainingValves;
+    }
+
+    public int RemoveDrainingValve()
+    {
+        _drainingValves--;
+        return _drainingValves;
     }
 }

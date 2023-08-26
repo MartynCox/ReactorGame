@@ -42,7 +42,7 @@ public class SimulationController : MonoBehaviour
         // After all valves have been updated, update the pipes
         foreach (Valve v in _allValves)
         {
-            v.SetPipeAppearance();
+            v.UpdateAppearance();
         }
 
 

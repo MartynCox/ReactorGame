@@ -5,21 +5,32 @@ using UnityEngine;
 
 public abstract class Valve : MonoBehaviour
 {
-    protected bool IsOpen = false;
+    [SerializeField] private ValveState _state = ValveState.Closed;
     [SerializeField] protected int FlowRate = 1;
     [SerializeField] private List<PipeScript> _connectedPipes;
     [SerializeField] private List<TankScript> _inflowTanks;
     [SerializeField] private List<TankScript> _outflowTanks;
 
-    public abstract void TurnValve();
-
-    private void Start()
-    {
-        IsOpen = false;
+    public bool IsOpen {
+        get { return _state == ValveState.Open; }
     }
 
-    public void SetPipeAppearance()
+    public bool IsInteractable {
+        get { return (
+            _state != ValveState.Disabled
+            && _state != ValveState.Broken
+        );}
+    }
+
+    public abstract void TurnValve();
+
+    public virtual void UpdateAppearance()
     {
+        // Set state
+        if (IsInteractable){
+            _state = FlowRate > 0 ? ValveState.Open : ValveState.Closed;
+        }
+
         // Set each pipe to be full or not full
         bool waterAvailable = CheckWaterAvailable();
         foreach (PipeScript p in _connectedPipes)
@@ -61,5 +72,18 @@ public abstract class Valve : MonoBehaviour
     public void SetFlowRate(int flowRate)
     {
         FlowRate = flowRate;
+    }
+
+    protected ValveState GetState()
+    {
+        return _state;
+    }
+
+    protected enum ValveState
+    {
+        Open,
+        Closed,
+        Disabled,
+        Broken
     }
 }

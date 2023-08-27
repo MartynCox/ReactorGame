@@ -9,9 +9,9 @@ public class TankScript : MonoBehaviour
     [SerializeField] private int _capacity = 0;
 
     [SerializeField] private float _lineThickness = 0.02f;
-    [SerializeField] private int _fillingValves = 0;
-    [SerializeField] private int _drainingValves = 0;
-    
+
+    [SerializeField] private List<Valve> _inputValves;
+    [SerializeField] private List<Valve> _outputValves;
 
     // Start is called before the first frame update
     void Start()
@@ -53,36 +53,66 @@ public class TankScript : MonoBehaviour
     {
         return _capacity;
     }
-
-    public bool CanFill(){
-        return _drainingValves == 0;
-    }
-
-    public bool CanDrain(){
-        return _fillingValves == 0;
-    }
-
-    public int AddFillingValve()
+    
+    public void AddInputValve(Valve valve)
     {
-        _fillingValves++;
-        return _fillingValves;
+        _inputValves.Add(valve);
     }
 
-    public int RemoveFillingValve()
+    public void AddOutputValve(Valve valve)
     {
-        _fillingValves--;
-        return _fillingValves;
+        _outputValves.Add(valve);
     }
 
-    public int AddDrainingValve()
+    public void DisableFilling()
     {
-        _drainingValves++;
-        return _drainingValves;
+        Debug.Log("Disabling filling");
+        // Disable all input valves
+        foreach (Valve valve in _inputValves)
+        {
+            valve.SetEnabled(false);
+        }
     }
 
-    public int RemoveDrainingValve()
+    public void DisableDraining()
     {
-        _drainingValves--;
-        return _drainingValves;
+        Debug.Log("Disabling draining for " + _outputValves.Count + "valves");
+        // Disable all output valves
+        foreach (Valve valve in _outputValves)
+        {
+            valve.SetEnabled(false);
+        }
+    }
+
+    public void EnableFilling()
+    {
+        Debug.Log("Enabling filling");
+        // Ensure all output valves are closed
+        foreach (Valve valve in _outputValves)
+        {
+            if (valve.IsOpen) { return; }
+        }
+
+        // Enable all input valves
+        foreach (Valve valve in _inputValves)
+        {
+            valve.SetEnabled(true);
+        }
+    }
+
+    public void EnableDraining()
+    {
+        Debug.Log("Enabling draining");
+        // Ensure all input valves are closed
+        foreach (Valve valve in _inputValves)
+        {
+            if (valve.IsOpen) { return; }
+        }
+
+        // Enable all output valves
+        foreach (Valve valve in _outputValves)
+        {
+            valve.SetEnabled(true);
+        }
     }
 }

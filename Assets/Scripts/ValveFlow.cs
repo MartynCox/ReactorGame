@@ -28,16 +28,18 @@ public class ValveFlow : Valve, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] private Sprite _tickSprite;
     [SerializeField] private Color _tickColour;
 
-    private void Start()
+    protected override void Start()
     {
-        Transform tickBucket = transform.GetChild(0);
+        base.Start();
+
+        // Get the handle and flow rate text
         _handle = transform.GetChild(1).GetComponent<RectTransform>();
         _flowRateText = transform.GetChild(2).GetComponent<TMP_Text>();
         
         // Set the rotation to point left (closed)
         _handle.rotation = Quaternion.Euler(0, 0, _closedAngle);
         _handle.GetComponent<UnityEngine.UI.Image>().color = _colours[(int) ValveState.Closed];
-        FlowRate = 0;
+        SetFlowRate(0);
 
         // Set the max angle for the valve to be open all the way
         if (_closedAngle - _maxAngle > _minimumAngleDifferent * (_maximumFlowRate))
@@ -46,6 +48,8 @@ public class ValveFlow : Valve, IPointerEnterHandler, IPointerExitHandler
         }
 
         // Create tick lines
+        Transform tickBucket = transform.GetChild(0);
+
         for (int i = 0; i <= _maximumFlowRate; i++)
         {
             GameObject tick = new GameObject("Tick " + i);
@@ -73,16 +77,15 @@ public class ValveFlow : Valve, IPointerEnterHandler, IPointerExitHandler
     public void Drag(){
         if (!_isDragging) { return; }
 
-        // Get the mouse position
+        // Get the horizontal distance the mouse has moved
         Vector3 mousePosition = Input.mousePosition;
 
-        // Get the horizontal distance the mouse has moved
         float mouseDelta = (mousePosition.x - _lastMousePosition.x) * _dragSensitivity;
 
         // Set the flow rate based on the mouse movement
-        FlowRate = _dragStartFlowRate + (int) Mathf.Round(
+        int newRate = _dragStartFlowRate + (int) Mathf.Round(
             mouseDelta / (_closedAngle - _maxAngle) * _maximumFlowRate);
-        FlowRate = Mathf.Clamp(FlowRate, 0, _maximumFlowRate);
+        SetFlowRate(Mathf.Clamp(newRate, 0, _maximumFlowRate));
 
         UpdateAppearance();
     }
@@ -93,7 +96,7 @@ public class ValveFlow : Valve, IPointerEnterHandler, IPointerExitHandler
         if (_isDragging) { return; }
 
         // Modify the flow rate
-        FlowRate = (FlowRate + 1) % (_maximumFlowRate + 1);
+        SetFlowRate((GetFlowRate() + 1) % (_maximumFlowRate + 1));
 
         UpdateAppearance();
     }
@@ -103,10 +106,10 @@ public class ValveFlow : Valve, IPointerEnterHandler, IPointerExitHandler
 
         // Set rotation and color
         _handle.rotation = Quaternion.Euler(0, 0, 
-            _closedAngle + (_maxAngle - _closedAngle) * FlowRate / _maximumFlowRate);
+            _closedAngle + (_maxAngle - _closedAngle) * GetFlowRate() / _maximumFlowRate);
         _handle.GetComponent<UnityEngine.UI.Image>().color = _colours[(int) GetState()];
 
-        _flowRateText.text = FlowRate.ToString();
+        _flowRateText.text = GetFlowRate().ToString();
 
     }
 
@@ -117,7 +120,7 @@ public class ValveFlow : Valve, IPointerEnterHandler, IPointerExitHandler
 
         _isDragging = true;
         _lastMousePosition = Input.mousePosition;
-        _dragStartFlowRate = FlowRate;
+        _dragStartFlowRate = GetFlowRate();
         Cursor.SetCursor(_dragPointer, new Vector2(23f, 3f), CursorMode.Auto);
     }
 

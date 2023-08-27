@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class ValveScript : Valve
 {
+    [SerializeField]
+    private Color[] _colours = {
+        Color.green, Color.red, Color.grey, Color.black };
+
     public override void TurnValve()
     {
         if (!IsInteractable) { return; }
@@ -14,4 +18,14 @@ public class ValveScript : Valve
 
         UpdateAppearance();
     }
+
+    public override void UpdateAppearance()
+    {
+        base.UpdateAppearance();
+
+        // Set rotation and color
+        GetComponent<UnityEngine.UI.Image>().color = _colours[(int)GetState()];
+
+    }
+
 }

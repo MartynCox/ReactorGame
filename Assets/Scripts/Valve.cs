@@ -50,8 +50,10 @@ public abstract class Valve : MonoBehaviour
 
     public void Flow()
     {
+      
         // Do nothing if the valve is closed
         if (!IsOpen) { return; }
+        Debug.Log("flow valve with name " + gameObject.name);
 
         // Transfer water
         foreach(TankScript t in _inflowTanks)
@@ -82,12 +84,11 @@ public abstract class Valve : MonoBehaviour
     {
         FlowRate = flowRate;
            
-        ValveState oldState = _state;
         // Set state to open or closed
-        if (IsInteractable)
-        {
-            _state = FlowRate > 0 ? ValveState.Open : ValveState.Closed;
-        }
+        if (!IsInteractable) { return; };
+       
+        ValveState oldState = _state;
+        _state = FlowRate > 0 ? ValveState.Open : ValveState.Closed;
 
         if (oldState == _state) { return; }
         

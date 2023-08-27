@@ -91,10 +91,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95ff083295038544ebabea0a9cca664c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _state: 1
   FlowRate: 1
   _connectedPipes: []
   _inflowTanks: []
   _outflowTanks: []
+  _colours:
+  - {r: 0, g: 0.4811321, b: 0.06594198, a: 1}
+  - {r: 0.74509805, g: 0, b: 0, a: 1}
+  - {r: 0.5566038, g: 0.2647806, b: 0.2494215, a: 1}
+  - {r: 0, g: 0, b: 0, a: 1}
 --- !u!114 &3254460458797127263
 MonoBehaviour:
   m_ObjectHideFlags: 0

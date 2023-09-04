@@ -15,7 +15,9 @@ public class ValveFlow : Valve, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] private int _closedAngle = 135;
     [SerializeField] private int _maxAngle = -45;
     [SerializeField] private int _minimumAngleDifferent = 45;
-    [SerializeField] private int _maximumFlowRate = 4;
+    [SerializeField] private int _minFlowRate = 0;
+    [SerializeField] private int _maxFlowRate = 4;
+    private int _flowRateDiff;
     private RectTransform _handle;
     private TMP_Text _flowRateText;
 
@@ -26,7 +28,7 @@ public class ValveFlow : Valve, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] private Texture2D _dragPointer;
 
     [SerializeField] private Sprite _tickSprite;
-    [SerializeField] private Color _tickColour;
+    [SerializeField] protected Color TickColour;
 
     protected override void Start()
     {
@@ -39,18 +41,18 @@ public class ValveFlow : Valve, IPointerEnterHandler, IPointerExitHandler
         // Set the rotation to point left (closed)
         _handle.rotation = Quaternion.Euler(0, 0, _closedAngle);
         _handle.GetComponent<UnityEngine.UI.Image>().color = _colours[(int) ValveState.Closed];
-        SetFlowRate(0);
 
         // Set the max angle for the valve to be open all the way
-        if (_closedAngle - _maxAngle > _minimumAngleDifferent * (_maximumFlowRate))
+        _flowRateDiff = _maxFlowRate - _minFlowRate;
+        if (_closedAngle - _maxAngle > _minimumAngleDifferent * (_flowRateDiff))
         {
-            _maxAngle = _closedAngle - _minimumAngleDifferent * (_maximumFlowRate);
+            _maxAngle = _closedAngle - _minimumAngleDifferent * (_flowRateDiff);
         }
 
         // Create tick lines
         Transform tickBucket = transform.GetChild(0);
 
-        for (int i = 0; i <= _maximumFlowRate; i++)
+        for (int i = 0; i <= _flowRateDiff; i++)
         {
             GameObject tick = new GameObject("Tick " + i);
             // Add as child of the valve but underneath the handle
@@ -59,8 +61,8 @@ public class ValveFlow : Valve, IPointerEnterHandler, IPointerExitHandler
             tick.transform.localScale = new Vector3(1, 1, 1);
             // -45 is to account for the different starting angle
             tick.transform.rotation = Quaternion.Euler(
-                0, 0, -45 + _closedAngle + (_maxAngle - _closedAngle) * i / _maximumFlowRate);
-            tick.AddComponent<UnityEngine.UI.Image>().color = _tickColour;
+                0, 0, -45 + _closedAngle + (_maxAngle - _closedAngle) * i / _flowRateDiff);
+            tick.AddComponent<UnityEngine.UI.Image>().color = TickColour;
             tick.GetComponent<UnityEngine.UI.Image>().sprite = _tickSprite;
 
             // Make anchor stretch in both directions and the offset 0
@@ -71,7 +73,8 @@ public class ValveFlow : Valve, IPointerEnterHandler, IPointerExitHandler
             rectTransform.offsetMax = new Vector2(0, 0);
         }
 
-        UpdateAppearance();
+        // Set flow and update appearance
+        SetFlowRate(0);
     }
 
     public void Drag(){
@@ -84,10 +87,12 @@ public class ValveFlow : Valve, IPointerEnterHandler, IPointerExitHandler
 
         // Set the flow rate based on the mouse movement
         int newRate = _dragStartFlowRate + (int) Mathf.Round(
-            mouseDelta / (_closedAngle - _maxAngle) * _maximumFlowRate);
-        SetFlowRate(Mathf.Clamp(newRate, 0, _maximumFlowRate));
-
-        UpdateAppearance();
+            mouseDelta / (_closedAngle - _maxAngle) * _flowRateDiff);
+        
+        // Clamp the flow rate
+        newRate += _minFlowRate;
+        newRate = Mathf.Clamp(newRate, _minFlowRate, _maxFlowRate);
+        SetFlowRate(newRate);
     }
 
     public override void TurnValve()
@@ -96,9 +101,9 @@ public class ValveFlow : Valve, IPointerEnterHandler, IPointerExitHandler
         if (_isDragging) { return; }
 
         // Modify the flow rate
-        SetFlowRate((GetFlowRate() + 1) % (_maximumFlowRate + 1));
-
-        UpdateAppearance();
+        int newRate = GetFlowRate() + 1;
+        if (newRate > _maxFlowRate) { newRate = _minFlowRate; }
+        SetFlowRate(newRate);
     }
 
     public override void UpdateAppearance(){
@@ -106,11 +111,11 @@ public class ValveFlow : Valve, IPointerEnterHandler, IPointerExitHandler
 
         // Set rotation and color
         _handle.rotation = Quaternion.Euler(0, 0, 
-            _closedAngle + (_maxAngle - _closedAngle) * GetFlowRate() / _maximumFlowRate);
+            _closedAngle + (_maxAngle - _closedAngle) * (GetFlowRate() - _minFlowRate) / _flowRateDiff);
         _handle.GetComponent<UnityEngine.UI.Image>().color = _colours[(int) GetState()];
 
-        _flowRateText.text = GetFlowRate().ToString();
-
+        // Only display the absolute value of the flow rate
+        _flowRateText.text = Mathf.Abs(GetFlowRate()).ToString();
     }
 
     public void BeginDrag()
@@ -120,7 +125,7 @@ public class ValveFlow : Valve, IPointerEnterHandler, IPointerExitHandler
 
         _isDragging = true;
         _lastMousePosition = Input.mousePosition;
-        _dragStartFlowRate = GetFlowRate();
+        _dragStartFlowRate = GetFlowRate() - _minFlowRate;
         Cursor.SetCursor(_dragPointer, new Vector2(23f, 3f), CursorMode.Auto);
     }
 

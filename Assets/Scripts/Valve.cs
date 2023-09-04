@@ -15,6 +15,16 @@ public abstract class Valve : MonoBehaviour
         get { return _state == ValveState.Open; }
     }
 
+    public bool IsOpenForward
+    {
+        get { return _state == ValveState.Open && FlowRate > 0; }
+    }
+
+    public bool IsOpenBackward
+    {
+        get { return _state == ValveState.Open && FlowRate < 0; }
+    }
+
     public bool IsInteractable {
         get { return (
             _state != ValveState.Disabled
@@ -50,7 +60,6 @@ public abstract class Valve : MonoBehaviour
 
     public void Flow()
     {
-      
         // Do nothing if the valve is closed
         if (!IsOpen) { return; }
         Debug.Log("flow valve with name " + gameObject.name);
@@ -88,33 +97,42 @@ public abstract class Valve : MonoBehaviour
         if (!IsInteractable) { return; };
        
         ValveState oldState = _state;
-        _state = FlowRate > 0 ? ValveState.Open : ValveState.Closed;
+        _state = FlowRate == 0 ? ValveState.Closed: ValveState.Open;
+        
+        UpdateAppearance();
 
         if (oldState == _state) { return; }
-        
+        foreach (TankScript t in _inflowTanks)
+        {
+            t.UpdateState();
+        }
+        foreach (TankScript t in _outflowTanks)
+        {
+            t.UpdateState();
+        }
         // Disable the tank filling or draining if the valve state changed
-        if (_state == ValveState.Open)
-        {
-            foreach (TankScript t in _inflowTanks)
-            {
-                t.DisableFilling();
-            }
-            foreach (TankScript t in _outflowTanks)
-            {
-                t.DisableDraining();
-            }
-        }
-        else if (_state == ValveState.Closed)
-        {
-            foreach (TankScript t in _inflowTanks)
-            {
-                t.EnableFilling();
-            }
-            foreach (TankScript t in _outflowTanks)
-            {
-                t.EnableDraining();
-            }
-        }
+        //if (_state == ValveState.Open)
+        //{
+        //    foreach (TankScript t in _inflowTanks)
+        //    {
+        //        t.DisableFilling();
+        //    }
+        //    foreach (TankScript t in _outflowTanks)
+        //    {
+        //        t.DisableDraining();
+        //    }
+        //}
+        //else if (_state == ValveState.Closed)
+        //{
+        //    foreach (TankScript t in _inflowTanks)
+        //    {
+        //        t.EnableFilling();
+        //    }
+        //    foreach (TankScript t in _outflowTanks)
+        //    {
+        //        t.EnableDraining();
+        //    }
+        //}
     }
 
     public int GetFlowRate()

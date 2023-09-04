@@ -15,8 +15,6 @@ public class ValveScript : Valve
         // Toggle the valve state
         transform.Rotate(0, 0, 45);
         SetFlowRate((GetFlowRate() + 1) % 2);
-
-        UpdateAppearance();
     }
 
     public override void UpdateAppearance()

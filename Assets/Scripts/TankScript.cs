@@ -64,6 +64,53 @@ public class TankScript : MonoBehaviour
         _outputValves.Add(valve);
     }
 
+    public void UpdateState()
+    {
+        // Check if the tank is being filled or drained
+        bool isFilling = false;
+        bool isDraining = false;
+        foreach (var valve in _inputValves)
+        {
+            if (valve.IsOpenForward)
+            {
+                isFilling = true;
+                break;
+            } else if (valve.IsOpenBackward)
+            {
+                isDraining = true;
+                break;
+            }
+        }
+        foreach (var valve in _outputValves)
+        {
+            if (valve.IsOpenForward)
+            {
+                isDraining = true;
+                break;
+            } else if (valve.IsOpenBackward)
+            {
+                isFilling = true;
+                break;
+            }
+        }
+        Debug.Log("Tank: " + this.name + "is filling: " + isFilling + ", draining: " + isDraining);
+
+        // Update the valves
+        if (isFilling)
+        {
+            DisableDraining();
+            EnableFilling();
+        } else if (isDraining)
+        {
+            DisableFilling();
+            EnableDraining();
+        } else
+        {
+            EnableFilling();
+            EnableDraining();
+        }   
+    }
+
     public void DisableFilling()
     {
         Debug.Log("Disabling filling");

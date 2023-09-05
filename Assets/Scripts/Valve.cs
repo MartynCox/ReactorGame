@@ -10,6 +10,7 @@ public abstract class Valve : MonoBehaviour
     [SerializeField] private List<PipeScript> _connectedPipes;
     [SerializeField] private List<TankScript> _inflowTanks;
     [SerializeField] private List<TankScript> _outflowTanks;
+    private List<string> _disabledBy = new List<string>();
 
     public bool IsOpen {
         get { return _state == ValveState.Open; }
@@ -54,15 +55,17 @@ public abstract class Valve : MonoBehaviour
         if (!IsOpen) { return; }
         Debug.Log("flow valve with name " + gameObject.name);
 
-        // Transfer water
+        // Transfer as much water as is available, if no input tanks, assume unlimited water
+        int flowed = -FlowRate;
         foreach (TankScript t in _inflowTanks)
         {
-            t.AddWater(-FlowRate);
+            flowed = t.AddWater(-FlowRate);
         }
 
         foreach (TankScript t in _outflowTanks)
         {
-            t.AddWater(FlowRate);
+            // Only transfer water if there is enough
+            t.AddWater(-flowed);
         }
     }
 
@@ -83,16 +86,20 @@ public abstract class Valve : MonoBehaviour
     {
         FlowRate = flowRate;
 
-        // Set state to open or closed
-        if (!IsInteractable) { return; };
+        if (!isForcedUpdate && !IsInteractable) { return; };
 
+        // Set state to open or closed
         ValveState oldState = _state;
         _state = FlowRate == 0 ? ValveState.Closed : ValveState.Open;
-        Debug.Log("IsInteractable: " + IsInteractable + " set flow rate to: " + flowRate + " state is: " + _state.ToString());
 
         UpdateAppearance();
 
         if (!isForcedUpdate && oldState == _state) { return; }
+        UpdateAllTanks();
+    }
+
+    private void UpdateAllTanks()
+    {
         foreach (TankScript t in _inflowTanks)
         {
             t.UpdateState();
@@ -112,13 +119,18 @@ public abstract class Valve : MonoBehaviour
     {
         return _state;
     }
-    public void SetEnabled(bool isEnabled)
+    public void SetEnabled(bool isEnabled, string tankName)
     {
         // Don't do anything if the valve is broken
         if (_state == ValveState.Broken) { return; }
 
+        Debug.Log("Valve: " + this.name + "SetEnabled: " + isEnabled);
         if (isEnabled)
         {
+            _disabledBy.Remove(tankName);
+            // Make sure the valve is not being disabled by someone else
+            if (_disabledBy.Count > 0) { return; }
+
             // If the valve is disabled, set it to closed otherwise do nothing
             if (_state == ValveState.Disabled)
             {
@@ -128,6 +140,8 @@ public abstract class Valve : MonoBehaviour
         else
         {
             _state = ValveState.Disabled;
+            if (!_disabledBy.Contains(tankName))
+                _disabledBy.Add(tankName);
         }
 
         UpdateAppearance();

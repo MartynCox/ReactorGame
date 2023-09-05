@@ -41,7 +41,8 @@ public class TankScript : MonoBehaviour
         int lastCapacity = _capacity;
         _capacity = Mathf.Clamp(_capacity + flowAmount, 0, _maxCapacity);
         UpdateWaterDisplay();
-        return _capacity;
+        // Return how much water was added
+        return _capacity - lastCapacity;
     }
 
     private void UpdateWaterDisplay()
@@ -85,16 +86,20 @@ public class TankScript : MonoBehaviour
                 break;
             }
         }
-        Debug.Log("Tank: " + this.name + "is filling: " + isFilling + ", draining: " + isDraining);
+
+        if (isFilling && isDraining)
+        {
+            Debug.LogError("Tank " + this.name + " is both filling and draining");
+        }
 
         // Update the valves
         if (isFilling)
         {
-            DisableValves(false);
+            DisableValves(true);
             EnableValves(true);
         } else if (isDraining)
         {
-            DisableValves(true);
+            DisableValves(false);
             EnableValves(false);
         } else
         {
@@ -105,10 +110,11 @@ public class TankScript : MonoBehaviour
         
     public void DisableValves(bool isFilling)
     {
-        List<Valve> valves = isFilling ? _inputValves : _outputValves;
+        List<Valve> valves = isFilling ? _outputValves : _inputValves;
+        Debug.Log("Tank: " + this.name + " Disabling " + valves.Count + " valves");
         foreach (Valve valve in valves)
         {
-            valve.SetEnabled(false);
+            valve.SetEnabled(false, this.name);
         }
     }
 
@@ -124,41 +130,12 @@ public class TankScript : MonoBehaviour
         }
 
         // Enable all valves in the correct direction
+        Debug.Log("Tank: " + this.name + " Enabling " + valvesToEnable.Count + " valves");
         foreach (Valve valve in valvesToEnable)
         {
-            valve.SetEnabled(true);
+            valve.SetEnabled(true, this.name);
         }
     }
-
-    //public void EnableFilling()
-    //{
-    //    // Ensure all output valves are closed
-    //    foreach (Valve valve in _outputValves)
-    //    {
-    //        if (valve.IsOpen) { return; }
-    //    }
-
-    //    // Enable all input valves
-    //    foreach (Valve valve in _inputValves)
-    //    {
-    //        valve.SetEnabled(true);
-    //    }
-    //}
-
-    //public void EnableDraining()
-    //{
-    //    // Ensure all input valves are closed
-    //    foreach (Valve valve in _inputValves)
-    //    {
-    //        if (valve.IsOpen) { return; }
-    //    }
-
-    //    // Enable all output valves
-    //    foreach (Valve valve in _outputValves)
-    //    {
-    //        valve.SetEnabled(true);
-    //    }
-    //}
 
     public void ReverseDirection(Valve valve, bool isNowInput)
     {

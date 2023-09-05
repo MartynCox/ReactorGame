@@ -10,7 +10,7 @@ public class HoverPointer : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Cursor.SetCursor(_pointerTexture, new Vector2(14f, 0f), CursorMode.Auto);
+        Cursor.SetCursor(_pointerTexture, new Vector2(12f, 0f), CursorMode.Auto);
     }
 
     public void OnPointerExit(PointerEventData eventData)

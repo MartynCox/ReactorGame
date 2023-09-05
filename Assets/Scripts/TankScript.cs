@@ -41,7 +41,8 @@ public class TankScript : MonoBehaviour
         int lastCapacity = _capacity;
         _capacity = Mathf.Clamp(_capacity + flowAmount, 0, _maxCapacity);
         UpdateWaterDisplay();
-        return _capacity;
+        // Return how much water was added
+        return _capacity - lastCapacity;
     }
 
     private void UpdateWaterDisplay()
@@ -64,55 +65,92 @@ public class TankScript : MonoBehaviour
         _outputValves.Add(valve);
     }
 
-    public void DisableFilling()
+    public void UpdateState()
     {
-        Debug.Log("Disabling filling");
-        // Disable all input valves
-        foreach (Valve valve in _inputValves)
+        // Check if the tank is being filled or drained
+        bool isFilling = false;
+        bool isDraining = false;
+        foreach (var valve in _inputValves)
         {
-            valve.SetEnabled(false);
+            if (valve.IsOpen)
+            {
+                isFilling = true;
+                break;
+            }
+        }
+        foreach (var valve in _outputValves)
+        {
+            if (valve.IsOpen)
+            {
+                isDraining = true;
+                break;
+            }
+        }
+
+        if (isFilling && isDraining)
+        {
+            Debug.LogError("Tank " + this.name + " is both filling and draining");
+        }
+
+        // Update the valves
+        if (isFilling)
+        {
+            DisableValves(true);
+            EnableValves(true);
+        } else if (isDraining)
+        {
+            DisableValves(false);
+            EnableValves(false);
+        } else
+        {
+            EnableValves(true);
+            EnableValves(false);
+        }   
+    }
+        
+    public void DisableValves(bool isFilling)
+    {
+        List<Valve> valves = isFilling ? _outputValves : _inputValves;
+        Debug.Log("Tank: " + this.name + " Disabling " + valves.Count + " valves");
+        foreach (Valve valve in valves)
+        {
+            valve.SetEnabled(false, this.name);
         }
     }
 
-    public void DisableDraining()
+    public void EnableValves(bool isFilling)
     {
-        Debug.Log("Disabling draining for " + _outputValves.Count + "valves");
-        // Disable all output valves
-        foreach (Valve valve in _outputValves)
-        {
-            valve.SetEnabled(false);
-        }
-    }
+        List<Valve> valvesToEnable = isFilling ? _inputValves : _outputValves;
+        List<Valve> valvesToCheck = isFilling ? _outputValves : _inputValves;
 
-    public void EnableFilling()
-    {
-        Debug.Log("Enabling filling");
-        // Ensure all output valves are closed
-        foreach (Valve valve in _outputValves)
+        // Make sure all valves that are not in the opposite direction are closed
+        foreach(Valve valve in valvesToCheck)
         {
             if (valve.IsOpen) { return; }
         }
 
-        // Enable all input valves
-        foreach (Valve valve in _inputValves)
+        // Enable all valves in the correct direction
+        Debug.Log("Tank: " + this.name + " Enabling " + valvesToEnable.Count + " valves");
+        foreach (Valve valve in valvesToEnable)
         {
-            valve.SetEnabled(true);
+            valve.SetEnabled(true, this.name);
         }
     }
 
-    public void EnableDraining()
+    public void ReverseDirection(Valve valve, bool isNowInput)
     {
-        Debug.Log("Enabling draining");
-        // Ensure all input valves are closed
-        foreach (Valve valve in _inputValves)
+        // Remove the valve from the old list
+        List<Valve> oldList = isNowInput ? _inputValves : _outputValves;
+        if (oldList.Contains(valve))
         {
-            if (valve.IsOpen) { return; }
+            oldList.Remove(valve);
+        } else
+        {
+            Debug.LogError("Valve " + valve.name + " not found in " + this.name + " " + (isNowInput ? "output" : "input") + " valves");
         }
 
-        // Enable all output valves
-        foreach (Valve valve in _outputValves)
-        {
-            valve.SetEnabled(true);
-        }
+        // Add the valve to the new list
+        List<Valve> newList = isNowInput ? _outputValves : _inputValves;
+        newList.Add(valve);
     }
 }

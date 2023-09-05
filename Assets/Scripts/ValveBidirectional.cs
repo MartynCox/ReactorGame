@@ -11,6 +11,8 @@ public class ValveBidirectional : ValveFlow
     private Color activeColour = Color.white;
     private Color inactiveColour = Color.grey;
 
+    private bool isReversed = true;
+
     protected override void Start()
     {
         this.inactiveColour = TickColour;
@@ -22,11 +24,7 @@ public class ValveBidirectional : ValveFlow
         base.UpdateAppearance();
 
         // Update the arrow colours
-        if (GetFlowRate() == 0)
-        {
-            leftArrow.color = inactiveColour;
-            rightArrow.color = inactiveColour;
-        } else if (GetFlowRate() > 0)
+        if (isReversed)
         {
             leftArrow.color = inactiveColour;
             rightArrow.color = activeColour;
@@ -35,5 +33,11 @@ public class ValveBidirectional : ValveFlow
             leftArrow.color = activeColour;
             rightArrow.color = inactiveColour;
         }
+    }
+
+    public override void ReverseDirection()
+    {
+        isReversed = !isReversed;
+        base.ReverseDirection();
     }
 }

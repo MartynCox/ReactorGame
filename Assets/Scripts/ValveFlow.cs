@@ -74,7 +74,7 @@ public class ValveFlow : Valve, IPointerEnterHandler, IPointerExitHandler
         }
 
         // Set flow and update appearance
-        SetFlowRate(0);
+        SetFlowRate(0, false);
     }
 
     public void Drag(){
@@ -92,7 +92,7 @@ public class ValveFlow : Valve, IPointerEnterHandler, IPointerExitHandler
         // Clamp the flow rate
         newRate += _minFlowRate;
         newRate = Mathf.Clamp(newRate, _minFlowRate, _maxFlowRate);
-        SetFlowRate(newRate);
+        SetFlowRate(newRate, false);
     }
 
     public override void TurnValve()
@@ -103,7 +103,7 @@ public class ValveFlow : Valve, IPointerEnterHandler, IPointerExitHandler
         // Modify the flow rate
         int newRate = GetFlowRate() + 1;
         if (newRate > _maxFlowRate) { newRate = _minFlowRate; }
-        SetFlowRate(newRate);
+        SetFlowRate(newRate, false);
     }
 
     public override void UpdateAppearance(){

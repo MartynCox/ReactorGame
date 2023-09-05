@@ -15,21 +15,11 @@ public abstract class Valve : MonoBehaviour
         get { return _state == ValveState.Open; }
     }
 
-    public bool IsOpenForward
-    {
-        get { return _state == ValveState.Open && FlowRate > 0; }
-    }
-
-    public bool IsOpenBackward
-    {
-        get { return _state == ValveState.Open && FlowRate < 0; }
-    }
-
     public bool IsInteractable {
         get { return (
             _state != ValveState.Disabled
             && _state != ValveState.Broken
-        );}
+        ); }
     }
 
     protected virtual void Start()
@@ -65,12 +55,12 @@ public abstract class Valve : MonoBehaviour
         Debug.Log("flow valve with name " + gameObject.name);
 
         // Transfer water
-        foreach(TankScript t in _inflowTanks)
+        foreach (TankScript t in _inflowTanks)
         {
             t.AddWater(-FlowRate);
         }
 
-        foreach(TankScript t in _outflowTanks)
+        foreach (TankScript t in _outflowTanks)
         {
             t.AddWater(FlowRate);
         }
@@ -89,19 +79,20 @@ public abstract class Valve : MonoBehaviour
         return true;
     }
 
-    public void SetFlowRate(int flowRate)
+    public void SetFlowRate(int flowRate, bool isForcedUpdate)
     {
         FlowRate = flowRate;
-           
+
         // Set state to open or closed
         if (!IsInteractable) { return; };
-       
+
         ValveState oldState = _state;
-        _state = FlowRate == 0 ? ValveState.Closed: ValveState.Open;
-        
+        _state = FlowRate == 0 ? ValveState.Closed : ValveState.Open;
+        Debug.Log("IsInteractable: " + IsInteractable + " set flow rate to: " + flowRate + " state is: " + _state.ToString());
+
         UpdateAppearance();
 
-        if (oldState == _state) { return; }
+        if (!isForcedUpdate && oldState == _state) { return; }
         foreach (TankScript t in _inflowTanks)
         {
             t.UpdateState();
@@ -110,29 +101,6 @@ public abstract class Valve : MonoBehaviour
         {
             t.UpdateState();
         }
-        // Disable the tank filling or draining if the valve state changed
-        //if (_state == ValveState.Open)
-        //{
-        //    foreach (TankScript t in _inflowTanks)
-        //    {
-        //        t.DisableFilling();
-        //    }
-        //    foreach (TankScript t in _outflowTanks)
-        //    {
-        //        t.DisableDraining();
-        //    }
-        //}
-        //else if (_state == ValveState.Closed)
-        //{
-        //    foreach (TankScript t in _inflowTanks)
-        //    {
-        //        t.EnableFilling();
-        //    }
-        //    foreach (TankScript t in _outflowTanks)
-        //    {
-        //        t.EnableDraining();
-        //    }
-        //}
     }
 
     public int GetFlowRate()
@@ -163,6 +131,27 @@ public abstract class Valve : MonoBehaviour
         }
 
         UpdateAppearance();
+    }
+
+    public virtual void ReverseDirection()
+    {
+        // Swap the inflow and outflow tanks
+        List<TankScript> tankScripts = new List<TankScript>(_inflowTanks);
+        _inflowTanks = new List<TankScript>(_outflowTanks);
+        _outflowTanks = new List<TankScript>(tankScripts);
+
+        foreach (TankScript t in _inflowTanks)
+        {
+            t.ReverseDirection(this, true);
+        }
+
+        foreach (TankScript t in _outflowTanks)
+        {
+            t.ReverseDirection(this, false);
+        }
+
+        // Set the flow rate to 0
+        SetFlowRate(0, true);
     }
 
     protected enum ValveState

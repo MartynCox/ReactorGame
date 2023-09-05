@@ -8,8 +8,8 @@ public abstract class Valve : MonoBehaviour
     [SerializeField] private ValveState _state = ValveState.Closed;
     [SerializeField] private int FlowRate = 1;
     [SerializeField] private List<PipeScript> _connectedPipes;
-    [SerializeField] private List<TankScript> _inflowTanks;
-    [SerializeField] private List<TankScript> _outflowTanks;
+    [SerializeField] private TankScript _inflowTank;
+    [SerializeField] private TankScript _outflowTank;
     private List<string> _disabledBy = new List<string>();
 
     public bool IsOpen {
@@ -26,15 +26,9 @@ public abstract class Valve : MonoBehaviour
     protected virtual void Start()
     {
         // Add this valve to the inflow and outflow tanks
-        foreach (TankScript t in _inflowTanks)
-        {
-            t.AddOutputValve(this);
-        }
+        if (_inflowTank != null) { _inflowTank.AddOutputValve(this); }
 
-        foreach (TankScript t in _outflowTanks)
-        {
-            t.AddInputValve(this);
-        }
+        if (_outflowTank != null) { _outflowTank.AddInputValve(this); }
     }
 
     public abstract void TurnValve();
@@ -57,27 +51,23 @@ public abstract class Valve : MonoBehaviour
 
         // Transfer as much water as is available, if no input tanks, assume unlimited water
         int flowed = -FlowRate;
-        foreach (TankScript t in _inflowTanks)
+        if (_inflowTank != null)
         {
-            flowed = t.AddWater(-FlowRate);
+            flowed = _inflowTank.AddWater(-FlowRate);
         }
 
-        foreach (TankScript t in _outflowTanks)
+        if (_outflowTank != null)
         {
-            // Only transfer water if there is enough
-            t.AddWater(-flowed);
+            _outflowTank.AddWater(-flowed);
         }
     }
 
     private bool CheckWaterAvailable()
     {
         // If there are no inflow tanks, assume unlimited water
-        if (_inflowTanks.Count == 0) { return true; }
+        if (_inflowTank == null) { return true; }
 
-        foreach (TankScript t in _inflowTanks)
-        {
-            if (t.GetCapacity() == 0) { return false; }
-        }
+        if (_inflowTank.GetCapacity() == 0) { return false; }
 
         return true;
     }
@@ -100,13 +90,13 @@ public abstract class Valve : MonoBehaviour
 
     private void UpdateAllTanks()
     {
-        foreach (TankScript t in _inflowTanks)
+        if (_inflowTank != null)
         {
-            t.UpdateState();
+            _inflowTank.UpdateState();
         }
-        foreach (TankScript t in _outflowTanks)
+        if (_outflowTank != null)
         {
-            t.UpdateState();
+            _outflowTank.UpdateState();
         }
     }
 
@@ -150,18 +140,18 @@ public abstract class Valve : MonoBehaviour
     public virtual void ReverseDirection()
     {
         // Swap the inflow and outflow tanks
-        List<TankScript> tankScripts = new List<TankScript>(_inflowTanks);
-        _inflowTanks = new List<TankScript>(_outflowTanks);
-        _outflowTanks = new List<TankScript>(tankScripts);
+        TankScript temp = _inflowTank;
+        _inflowTank = _outflowTank;
+        _outflowTank = temp;
 
-        foreach (TankScript t in _inflowTanks)
+        if (_inflowTank != null)
         {
-            t.ReverseDirection(this, true);
+            _inflowTank.ReverseDirection(this, true);
         }
 
-        foreach (TankScript t in _outflowTanks)
+        if (_outflowTank != null)
         {
-            t.ReverseDirection(this, false);
+            _outflowTank.ReverseDirection(this, false);
         }
 
         // Set the flow rate to 0

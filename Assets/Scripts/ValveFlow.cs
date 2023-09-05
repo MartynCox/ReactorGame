@@ -126,7 +126,7 @@ public class ValveFlow : Valve, IPointerEnterHandler, IPointerExitHandler
         _isDragging = true;
         _lastMousePosition = Input.mousePosition;
         _dragStartFlowRate = GetFlowRate() - _minFlowRate;
-        Cursor.SetCursor(_dragPointer, new Vector2(23f, 3f), CursorMode.Auto);
+        Cursor.SetCursor(_dragPointer, new Vector2(11f, 1.5f), CursorMode.Auto);
     }
 
     public void EndDrag()
@@ -140,7 +140,9 @@ public class ValveFlow : Valve, IPointerEnterHandler, IPointerExitHandler
         // If the valve is disabled or broken, don't change the cursor
         if (!IsInteractable) { return; }
 
-        Cursor.SetCursor(_dragPointer, new Vector2(23f, 3f), CursorMode.Auto);
+        Cursor.SetCursor(_dragPointer, new Vector2(11f, 1.5f), CursorMode.Auto);
+        // Make the handle slightly lighter
+        _handle.GetComponent<UnityEngine.UI.Image>().color = _colours[(int) GetState()] * 1.2f;
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -148,5 +150,7 @@ public class ValveFlow : Valve, IPointerEnterHandler, IPointerExitHandler
         if (!_isDragging){
             Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
         }
+        // Reset the handle color
+        _handle.GetComponent<UnityEngine.UI.Image>().color = _colours[(int) GetState()];
     }
 }

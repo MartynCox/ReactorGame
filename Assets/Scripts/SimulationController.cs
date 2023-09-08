@@ -5,7 +5,7 @@ using UnityEngine;
 public class SimulationController : MonoBehaviour
 {
     [SerializeField] private Transform _advanceBar;
-    private float _stepTime = 8f;
+    [SerializeField] private float _stepTime = 15f;
     private float _timeUntilAdvance;
 
     [SerializeField]

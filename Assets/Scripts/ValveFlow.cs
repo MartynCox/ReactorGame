@@ -17,6 +17,7 @@ public class ValveFlow : Valve, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] private int _minimumAngleDifferent = 45;
     [SerializeField] private int _minFlowRate = 0;
     [SerializeField] private int _maxFlowRate = 4;
+    [SerializeField] private int _flowInc = 2;
     private int _flowRateDiff;
     private RectTransform _handle;
     private TMP_Text _flowRateText;
@@ -54,6 +55,9 @@ public class ValveFlow : Valve, IPointerEnterHandler, IPointerExitHandler
 
         for (int i = 0; i <= _flowRateDiff; i++)
         {
+            // Check if the tick should be written according te the increment
+            if (i % _flowInc != 0) { continue; }
+
             GameObject tick = new GameObject("Tick " + i);
             // Add as child of the valve but underneath the handle
             tick.transform.SetParent(tickBucket);
@@ -85,9 +89,12 @@ public class ValveFlow : Valve, IPointerEnterHandler, IPointerExitHandler
 
         float mouseDelta = (mousePosition.x - _lastMousePosition.x) * _dragSensitivity;
 
-        // Set the flow rate based on the mouse movement
+        // int newRate = _dragStartFlowRate + (int) Mathf.Round(
+            // mouseDelta / (_closedAngle - _maxAngle) * _flowRateDiff);
+        
+        // Set the flow rate based on the mouse movement, rounding to the nearest increment
         int newRate = _dragStartFlowRate + (int) Mathf.Round(
-            mouseDelta / (_closedAngle - _maxAngle) * _flowRateDiff);
+            mouseDelta / (_closedAngle - _maxAngle) * _flowRateDiff / _flowInc) * _flowInc;
         
         // Clamp the flow rate
         newRate += _minFlowRate;
@@ -101,7 +108,7 @@ public class ValveFlow : Valve, IPointerEnterHandler, IPointerExitHandler
         if (_isDragging) { return; }
 
         // Modify the flow rate
-        int newRate = GetFlowRate() + 1;
+        int newRate = GetFlowRate() + _flowInc;
         if (newRate > _maxFlowRate) { newRate = _minFlowRate; }
         SetFlowRate(newRate, false);
     }

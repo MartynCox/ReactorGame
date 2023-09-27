@@ -525,7 +525,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _advanceBar: {fileID: 491111597}
-  _stepTime: 15
+  _stepTime: 25
   _allValves:
   - {fileID: 1834724032}
   - {fileID: 1909388679}

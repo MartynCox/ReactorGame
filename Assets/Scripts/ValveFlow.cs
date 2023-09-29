@@ -17,7 +17,7 @@ public class ValveFlow : Valve, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] private int _minimumAngleDifferent = 45;
     [SerializeField] private int _minFlowRate = 0;
     [SerializeField] private int _maxFlowRate = 4;
-    [SerializeField] private int _flowInc = 2;
+    [SerializeField] private int _flowInc = 1;
     private int _flowRateDiff;
     private RectTransform _handle;
     private TMP_Text _flowRateText;
@@ -149,7 +149,7 @@ public class ValveFlow : Valve, IPointerEnterHandler, IPointerExitHandler
 
         Cursor.SetCursor(_dragPointer, new Vector2(11f, 1.5f), CursorMode.Auto);
         // Make the handle slightly lighter
-        _handle.GetComponent<UnityEngine.UI.Image>().color = _colours[(int) GetState()] * 1.2f;
+        _handle.GetComponent<UnityEngine.UI.Image>().color = _colours[(int) GetState()] * 2.0f;
     }
 
     public void OnPointerExit(PointerEventData eventData)

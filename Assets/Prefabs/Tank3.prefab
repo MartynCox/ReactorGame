@@ -168,4 +168,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxCapacity: 8
   _capacity: 3
+  _waterLevel: 0
+  _animationSpeed: 2
   _lineThickness: 0.02
+  _inputValves: []
+  _outputValves: []

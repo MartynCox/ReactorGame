@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TankScript : MonoBehaviour
@@ -7,6 +8,8 @@ public class TankScript : MonoBehaviour
     private RectTransform _water;
     [SerializeField] private int _maxCapacity = 8;
     [SerializeField] private int _capacity = 0;
+    [SerializeField] private float _waterLevel = 0;
+    [SerializeField] private float _animationSpeed = 1f;
 
     [SerializeField] private float _lineThickness = 0.02f;
 
@@ -17,7 +20,8 @@ public class TankScript : MonoBehaviour
     void Start()
     {
         _water = transform.GetChild(0).GetComponent<RectTransform>();
-        UpdateWaterDisplay();
+        _waterLevel = _capacity;
+        //UpdateWaterDisplay();
 
         // Create the line markings
         for (int i = 1; i < _maxCapacity; i++)
@@ -36,18 +40,25 @@ public class TankScript : MonoBehaviour
         }
     }
 
+    public void Update()
+    {
+        // Move the water toward the correct value by the namiation speed
+        _waterLevel = Mathf.Lerp(_waterLevel, _capacity, _animationSpeed * Time.deltaTime);
+        UpdateWaterDisplay();
+    }
+
     public int AddWater(int flowAmount)
     {
         int lastCapacity = _capacity;
         _capacity = Mathf.Clamp(_capacity + flowAmount, 0, _maxCapacity);
-        UpdateWaterDisplay();
+        //UpdateWaterDisplay();
         // Return how much water was added
         return _capacity - lastCapacity;
     }
 
     private void UpdateWaterDisplay()
     {
-        _water.anchorMax = new Vector2(1, (float)_capacity / _maxCapacity - 0.001f);
+        _water.anchorMax = new Vector2(1, _waterLevel / _maxCapacity - 0.001f);
     }
 
     public int GetCapacity()

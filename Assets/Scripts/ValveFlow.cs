@@ -148,8 +148,9 @@ public class ValveFlow : Valve, IPointerEnterHandler, IPointerExitHandler
         if (!IsInteractable) { return; }
 
         Cursor.SetCursor(_dragPointer, new Vector2(11f, 1.5f), CursorMode.Auto);
-        // Make the handle slightly lighter
-        _handle.GetComponent<UnityEngine.UI.Image>().color = _colours[(int) GetState()] * 2.0f;
+        // Make the handle darker but with full alpha
+        _handle.GetComponent<UnityEngine.UI.Image>().color = 
+            _colours[(int) GetState()] * 0.8f + new Color(0, 0, 0, 1);
     }
 
     public void OnPointerExit(PointerEventData eventData)

@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class SimulationController : MonoBehaviour
 {
     [SerializeField] private Transform _advanceBar;
     [SerializeField] private float _stepTime = 15f;
+    [SerializeField] private TMP_Text _stepText;
     private float _timeUntilAdvance;
 
     [SerializeField]
@@ -22,6 +24,10 @@ public class SimulationController : MonoBehaviour
 
         _advanceBar.GetComponent<RectTransform>().anchorMax = 
             new Vector2(1f - _timeUntilAdvance / _stepTime, 1f);
+
+        _stepText.text = "Next cycle in "
+            + Mathf.CeilToInt(_timeUntilAdvance).ToString()
+            + " s";
 
         if (_timeUntilAdvance <= 0f)
         {

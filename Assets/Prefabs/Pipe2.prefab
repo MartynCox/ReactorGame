@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.7735849, g: 0.7735849, b: 0.7735849, a: 1}
+  m_Color: {r: 0.6, g: 0.6, b: 0.6, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -89,6 +89,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 930bd028162ad224ba6f1435ffd3c219, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pipeColour: {r: 0.77254903, g: 0.77254903, b: 0.77254903, a: 1}
-  _waterColour: {r: 0.6123621, g: 0.84896797, b: 0.9339623, a: 1}
+  _pipeColour: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  _waterColour: {r: 0.4438857, g: 0.7427538, b: 0.8962264, a: 1}
   _isWater: 0

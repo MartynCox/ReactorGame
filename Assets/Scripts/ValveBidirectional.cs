@@ -40,4 +40,10 @@ public class ValveBidirectional : ValveFlow
         isReversed = !isReversed;
         base.ReverseDirection();
     }
+
+    public override void Break()
+    {
+        // Do not break bidirectional valves
+        return;
+    }
 }

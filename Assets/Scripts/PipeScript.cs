@@ -21,8 +21,10 @@ public class PipeScript : MonoBehaviour
         // Set children pipes
         for (int i = 0; i < transform.childCount; i++)
         {
-            PipeScript p = transform.GetChild(i).GetComponent<PipeScript>();
-            p.SetWater(isWater);
+            Transform p = transform.GetChild(i);
+            if (p.GetComponent<PipeScript>() == null) { continue; }
+            
+            p.GetComponent<PipeScript>().SetWater(isWater);
         }
     }
 }

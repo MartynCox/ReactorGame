@@ -23,16 +23,16 @@ public class TableManager : MonoBehaviour
         Color good = _colours[1];
         Color bad = _colours[2];
 
-        addTableValue("Flow", "Temp", header);
-        addTableValue("5+", "100", good);
-        addTableValue("4", "120", good);
-        addTableValue("3", "160", bad);
-        addTableValue("2", "200", bad);
-        addTableValue("1", "250", bad);
-        addTableValue("0", "300", bad);
+        AddTableValue("Flow", "Temp", header);
+        AddTableValue("5+", "100", good);
+        AddTableValue("4", "120", good);
+        AddTableValue("3", "160", bad);
+        AddTableValue("2", "200", bad);
+        AddTableValue("1", "250", bad);
+        AddTableValue("0", "300", bad);
     }
 
-    void addTableValue(string flow, string temperature, Color? color = null)
+    void AddTableValue(string flow, string temperature, Color? color = null)
     {
         // Create the new rows
         GameObject flowText = Instantiate(_tableRowPrefab, _flowColumn.transform);

@@ -51,7 +51,17 @@ public class TankScript : MonoBehaviour
     {
         int lastCapacity = _capacity;
         _capacity = Mathf.Clamp(_capacity + flowAmount, 0, _maxCapacity);
-        //UpdateWaterDisplay();
+
+        // Check if the tank has overflowed
+        if (lastCapacity + flowAmount > _maxCapacity)
+        {
+            foreach (Valve valve in _inputValves)
+            {
+                valve.Break();
+            }
+                
+        }
+
         // Return how much water was added
         return _capacity - lastCapacity;
     }

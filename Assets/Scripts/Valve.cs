@@ -62,6 +62,13 @@ public abstract class Valve : MonoBehaviour
         }
     }
 
+    public virtual void Break()
+    {
+        // Set the state to broken
+        _state = ValveState.Broken;
+        SetFlowRate(0, true);
+    }
+
     private bool CheckWaterAvailable()
     {
         // If there are no inflow tanks, assume unlimited water
@@ -80,7 +87,9 @@ public abstract class Valve : MonoBehaviour
 
         // Set state to open or closed
         ValveState oldState = _state;
-        _state = FlowRate == 0 ? ValveState.Closed : ValveState.Open;
+        if (_state != ValveState.Broken) {
+            _state = FlowRate == 0 ? ValveState.Closed : ValveState.Open;
+        }
 
         UpdateAppearance();
 

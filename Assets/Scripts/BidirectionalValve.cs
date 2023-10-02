@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ValveBidirectional : ValveFlow
+public class BidirectionalValve : FlowValve
 {
     [SerializeField] private Image leftArrow;
     [SerializeField] private Image rightArrow;

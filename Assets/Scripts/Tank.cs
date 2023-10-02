@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class TankScript : MonoBehaviour
+public class Tank : MonoBehaviour
 {
     private RectTransform _water;
+    [SerializeField] private string _name;
     [SerializeField] private int _maxCapacity = 8;
     [SerializeField] private int _capacity = 0;
     [SerializeField] private float _waterLevel = 0;
@@ -16,12 +17,16 @@ public class TankScript : MonoBehaviour
     [SerializeField] private List<Valve> _inputValves;
     [SerializeField] private List<Valve> _outputValves;
 
-    // Start is called before the first frame update
     void Start()
     {
+        // Get capacity from settings
+        _maxCapacity = GameController.Instance.Settings.Tanks[_name].Capacity;
+        _capacity = GameController.Instance.Settings.Tanks[_name].StartLevel;
+
+        // Get the water display
         _water = transform.GetChild(0).GetComponent<RectTransform>();
         _waterLevel = _capacity;
-        //UpdateWaterDisplay();
+
 
         // Create the line markings
         for (int i = 1; i < _maxCapacity; i++)
@@ -53,7 +58,7 @@ public class TankScript : MonoBehaviour
         _capacity = Mathf.Clamp(_capacity + flowAmount, 0, _maxCapacity);
 
         // Check if the tank has overflowed
-        if (lastCapacity + flowAmount > _maxCapacity)
+        if (GameController.Instance.Settings.BreakTankOnOverflow && lastCapacity + flowAmount > _maxCapacity)
         {
             foreach (Valve valve in _inputValves)
             {
@@ -132,7 +137,6 @@ public class TankScript : MonoBehaviour
     public void DisableValves(bool isFilling)
     {
         List<Valve> valves = isFilling ? _outputValves : _inputValves;
-        Debug.Log("Tank: " + this.name + " Disabling " + valves.Count + " valves");
         foreach (Valve valve in valves)
         {
             valve.SetEnabled(false, this.name);
@@ -151,7 +155,6 @@ public class TankScript : MonoBehaviour
         }
 
         // Enable all valves in the correct direction
-        Debug.Log("Tank: " + this.name + " Enabling " + valvesToEnable.Count + " valves");
         foreach (Valve valve in valvesToEnable)
         {
             valve.SetEnabled(true, this.name);

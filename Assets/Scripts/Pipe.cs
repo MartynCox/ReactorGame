@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PipeScript : MonoBehaviour
+public class Pipe : MonoBehaviour
 {
     [SerializeField] private Color _pipeColour;
     [SerializeField] private Color _waterColour;
@@ -22,9 +22,9 @@ public class PipeScript : MonoBehaviour
         for (int i = 0; i < transform.childCount; i++)
         {
             Transform p = transform.GetChild(i);
-            if (p.GetComponent<PipeScript>() == null) { continue; }
+            if (p.GetComponent<Pipe>() == null) { continue; }
             
-            p.GetComponent<PipeScript>().SetWater(isWater);
+            p.GetComponent<Pipe>().SetWater(isWater);
         }
     }
 }

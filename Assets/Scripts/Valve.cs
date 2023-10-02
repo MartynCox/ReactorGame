@@ -7,9 +7,9 @@ public abstract class Valve : MonoBehaviour
 {
     [SerializeField] private ValveState _state = ValveState.Closed;
     [SerializeField] private int FlowRate = 1;
-    [SerializeField] private List<PipeScript> _connectedPipes;
-    [SerializeField] private TankScript _inflowTank;
-    [SerializeField] private TankScript _outflowTank;
+    [SerializeField] private List<Pipe> _connectedPipes;
+    [SerializeField] private Tank _inflowTank;
+    [SerializeField] private Tank _outflowTank;
     private List<string> _disabledBy = new List<string>();
 
     public bool IsOpen {
@@ -37,7 +37,7 @@ public abstract class Valve : MonoBehaviour
     {
         // Set each pipe to be full or not full
         bool waterAvailable = CheckWaterAvailable();
-        foreach (PipeScript p in _connectedPipes)
+        foreach (Pipe p in _connectedPipes)
         {
             p.SetWater(IsOpen && waterAvailable);
         }
@@ -123,7 +123,6 @@ public abstract class Valve : MonoBehaviour
         // Don't do anything if the valve is broken
         if (_state == ValveState.Broken) { return; }
 
-        Debug.Log("Valve: " + this.name + "SetEnabled: " + isEnabled);
         if (isEnabled)
         {
             _disabledBy.Remove(tankName);
@@ -149,7 +148,7 @@ public abstract class Valve : MonoBehaviour
     public virtual void ReverseDirection()
     {
         // Swap the inflow and outflow tanks
-        TankScript temp = _inflowTank;
+        Tank temp = _inflowTank;
         _inflowTank = _outflowTank;
         _outflowTank = temp;
 

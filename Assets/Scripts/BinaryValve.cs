@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ValveScript : Valve
+public class BinaryValve : Valve
 {
     [SerializeField]
     private Color[] _colours = {

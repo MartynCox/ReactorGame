@@ -535,6 +535,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5757081414190277342, guid: 896d47181a1bea341a6e7ec291a231db, type: 3}
+      propertyPath: _name
+      value: tank4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5757081414190277342, guid: 896d47181a1bea341a6e7ec291a231db, type: 3}
       propertyPath: _maxCapacity
       value: 8
       objectReference: {fileID: 0}
@@ -664,7 +668,7 @@ GameObject:
   - component: {fileID: 251999017}
   - component: {fileID: 251999016}
   m_Layer: 0
-  m_Name: SimulationController
+  m_Name: GameController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2293,6 +2297,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5757081414190277342, guid: 896d47181a1bea341a6e7ec291a231db, type: 3}
+      propertyPath: _name
+      value: tank1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5757081414190277342, guid: 896d47181a1bea341a6e7ec291a231db, type: 3}
       propertyPath: _capacity
       value: 1
       objectReference: {fileID: 0}
@@ -2601,7 +2609,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 251999016}
-        m_TargetAssemblyTypeName: SimulationController, Assembly-CSharp
+        m_TargetAssemblyTypeName: GameController, Assembly-CSharp
         m_MethodName: Advance
         m_Mode: 1
         m_Arguments:
@@ -3067,6 +3075,10 @@ PrefabInstance:
     - target: {fileID: 5757081414190277337, guid: 896d47181a1bea341a6e7ec291a231db, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5757081414190277342, guid: 896d47181a1bea341a6e7ec291a231db, type: 3}
+      propertyPath: _name
+      value: tank2
       objectReference: {fileID: 0}
     - target: {fileID: 5757081414190277342, guid: 896d47181a1bea341a6e7ec291a231db, type: 3}
       propertyPath: _maxCapacity
@@ -5861,6 +5873,10 @@ PrefabInstance:
     - target: {fileID: 5757081414190277337, guid: 896d47181a1bea341a6e7ec291a231db, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5757081414190277342, guid: 896d47181a1bea341a6e7ec291a231db, type: 3}
+      propertyPath: _name
+      value: tank3
       objectReference: {fileID: 0}
     - target: {fileID: 5757081414190277342, guid: 896d47181a1bea341a6e7ec291a231db, type: 3}
       propertyPath: _maxCapacity

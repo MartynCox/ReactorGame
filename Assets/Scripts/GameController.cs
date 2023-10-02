@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting;
 
-public class SimulationController : MonoBehaviour
+public class GameController : MonoBehaviour
 {
     [SerializeField] private Transform _advanceBar;
     [SerializeField] private float _stepTime = 15f;
@@ -13,7 +14,26 @@ public class SimulationController : MonoBehaviour
     [SerializeField]
     private List<Valve> _allValves;
 
-    private void Start()
+    public static GameController Instance { get; private set; }
+    public GameSettings Settings { get; set; }
+
+    private void Awake()
+    {
+        // Singleton pattern
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        
+        // Read the settings from a file
+        Settings = GameSettings.LoadSettings("Settings/settings.json");
+        Debug.Log("Tank settings: " + Settings.Tanks["tank1"].Capacity);
+        _stepTime = Settings.CycleDuration;
+    }
+
+    void Start()
     {
         _timeUntilAdvance = _stepTime;
     }
@@ -50,8 +70,5 @@ public class SimulationController : MonoBehaviour
         {
             v.UpdateAppearance();
         }
-
-
-        Debug.Log("advance simulation");
     }
 }

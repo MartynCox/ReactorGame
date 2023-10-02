@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 using TMPro;
 using Unity.VisualScripting;
 
-public class ValveFlow : Valve, IPointerEnterHandler, IPointerExitHandler
+public class FlowValve : Valve, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private Color[] _colours = {
         Color.green, Color.red, Color.grey, Color.black };

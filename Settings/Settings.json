@@ -1,0 +1,30 @@
+{
+  "cycleDuration": 25,
+  "breakTankOnOverflow": true,
+  "flowTemperatures": {
+    "5": 100,
+    "4": 120,
+    "3": 150,
+    "2": 200,
+    "1": 250,
+    "0": 300
+  },
+  "tanks": {
+    "tank1": {
+      "capacity": 2,
+      "startLevel": 1
+    },
+    "tank2": {
+      "capacity": 4,
+      "startLevel": 1
+    },
+    "tank3": {
+      "capacity": 7,
+      "startLevel": 1
+    },
+    "tank4": {
+      "capacity": 9,
+      "startLevel": 1
+    }
+  }
+}

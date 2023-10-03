@@ -29,7 +29,6 @@ public class GameController : MonoBehaviour
         
         // Read the settings from a file
         Settings = GameSettings.LoadSettings("Settings/settings.json");
-        Debug.Log("Tank settings: " + Settings.Tanks["tank1"].Capacity);
         _stepTime = Settings.CycleDuration;
     }
 

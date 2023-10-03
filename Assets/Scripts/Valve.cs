@@ -47,7 +47,6 @@ public abstract class Valve : MonoBehaviour
     {
         // Do nothing if the valve is closed
         if (!IsOpen) { return; }
-        Debug.Log("flow valve with name " + gameObject.name);
 
         // Transfer as much water as is available, if no input tanks, assume unlimited water
         int flowed = -FlowRate;
@@ -67,6 +66,12 @@ public abstract class Valve : MonoBehaviour
         // Set the state to broken
         _state = ValveState.Broken;
         SetFlowRate(0, true);
+
+        // Break pipes
+        foreach (Pipe p in _connectedPipes)
+        {
+            p.SetBroken(true);
+        }
     }
 
     private bool CheckWaterAvailable()

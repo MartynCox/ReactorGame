@@ -27,4 +27,16 @@ public class Pipe : MonoBehaviour
             p.GetComponent<Pipe>().SetWater(isWater);
         }
     }
+
+    public virtual void SetBroken(bool isBroken)
+    {
+        // Do nothing but break all children pipes
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            Transform p = transform.GetChild(i);
+            if (p.GetComponent<Pipe>() == null) { continue; }
+            
+            p.GetComponent<Pipe>().SetBroken(isBroken);
+        }
+    }
 }

@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 5757081414190277343}
   - component: {fileID: 5757081414190277342}
   m_Layer: 5
-  m_Name: Tank3
+  m_Name: Tank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -166,10 +166,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 538499b7494c3844faaef6e89ef48433, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _name: 
   _maxCapacity: 8
   _capacity: 3
   _waterLevel: 0
-  _animationSpeed: 2
+  _animationSpeed: 3.5
   _lineThickness: 0.02
   _inputValves: []
   _outputValves: []

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3254460458797127263}
   - component: {fileID: -7297173329923024810}
   m_Layer: 5
-  m_Name: Valve1
+  m_Name: BinaryValve
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

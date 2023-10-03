@@ -72,6 +72,7 @@ public class Tank : MonoBehaviour
         // Check if the tank has overflowed
         if (GameController.Instance.Settings.BreakTankOnOverflow && lastCapacity + flowAmount > _maxCapacity)
         {
+            _waterLevel = _capacity;
             foreach (Valve valve in _inputValves)
             {
                 valve.Break();

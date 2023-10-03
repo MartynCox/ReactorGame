@@ -1,7 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using UnityEditor.UIElements;
 using UnityEngine;
 
 public abstract class Valve : MonoBehaviour
@@ -142,6 +142,11 @@ public abstract class Valve : MonoBehaviour
     protected ValveState GetState()
     {
         return _state;
+    }
+
+    protected void SetState(ValveState state)
+    {
+        _state = state;
     }
 
     public float GetFlowRateThrottle()

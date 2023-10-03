@@ -45,4 +45,6 @@ public class ValveSettings
     public int FlowStepSize { get; set; }
     [JsonProperty("flowRatePerStep")]
     public float FlowRatePerStep { get; set; }
+    [JsonProperty("isBroken")]
+    public bool IsBroken { get; set; }
 }

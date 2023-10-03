@@ -20,24 +20,26 @@
       "startLevel": 1
     },
     "tank3": {
-      "capacity": 7,
+      "capacity": 6,
       "startLevel": 1
     },
     "tank4": {
-      "capacity": 9,
+      "capacity": 8,
       "startLevel": 1
     }
   },
   "valves": {
     "valve1": {
-      "maxFlowDisplay": 3,
+      "maxFlowDisplay": 2,
       "flowStepSize": 1,
-      "flowRatePerStep": 1.0
+      "flowRatePerStep": 1.0,
+      "isBroken": false
     },
     "valve2": {
-      "maxFlowDisplay": 3,
+      "maxFlowDisplay": 2,
       "flowStepSize": 1,
-      "flowRatePerStep": 1.0
+      "flowRatePerStep": 1.0,
+      "isBroken": false
     }
   }
 }

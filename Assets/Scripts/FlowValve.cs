@@ -44,6 +44,11 @@ public class FlowValve : Valve, IPointerEnterHandler, IPointerExitHandler
             _minFlowRate = 0;
             _flowInc = settings.FlowStepSize;
             SetFlowRateThrottle(settings.FlowRatePerStep);
+
+            if (settings.IsBroken)
+            {
+                SetState(ValveState.Broken);
+            }
         }
 
         // Get the handle and flow rate text
@@ -69,7 +74,7 @@ public class FlowValve : Valve, IPointerEnterHandler, IPointerExitHandler
         CreateTickLines();
 
         // Set flow and update appearance
-        SetFlowRate(0, false);
+        SetFlowRate(0, true);
     }
 
     private void CreateTickLines()

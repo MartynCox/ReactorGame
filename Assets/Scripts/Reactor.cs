@@ -77,11 +77,11 @@ public class Reactor : Tank
         float totalFlowRate = 0;
         foreach (Valve valve in GetInputValves())
         {
-            totalFlowRate += valve.GetWaterAvailable();
+            valve.ResetMockCapacity();
         }
         foreach (Valve valve in GetInputValves())
         {
-            valve.ResetMockCapacity();
+            totalFlowRate += valve.GetWaterAvailable();
         }
 
         foreach (Pipe pipe in _outflowPipes)

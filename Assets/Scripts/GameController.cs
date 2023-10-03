@@ -18,7 +18,6 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
-        // Singleton pattern
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -44,8 +43,7 @@ public class GameController : MonoBehaviour
             new Vector2(1f - _timeUntilAdvance / _stepTime, 1f);
 
         _stepText.text = "Next cycle in "
-            + Mathf.CeilToInt(_timeUntilAdvance).ToString()
-            + " s";
+            + Mathf.CeilToInt(_timeUntilAdvance).ToString() + " s";
 
         if (_timeUntilAdvance <= 0f)
         {
@@ -57,14 +55,14 @@ public class GameController : MonoBehaviour
     {
         _timeUntilAdvance = _stepTime;
 
-        // Find and update the reactor
+        // Find and record water flow to reactor
         Reactor reactor = FindObjectOfType<Reactor>();
         if (reactor != null)
         {
             reactor.RecordValue();
         }
         
-        // Find all valves
+        // Update all valves
         foreach (Valve v in _allValves)
         {
             v.Flow();
@@ -76,6 +74,7 @@ public class GameController : MonoBehaviour
             v.UpdateAppearance();
         }
 
+        // Finally update the reactor
         if (reactor != null)
         {
             reactor.UpdateState();

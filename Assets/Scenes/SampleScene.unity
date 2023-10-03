@@ -790,7 +790,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1203290559}
-  - {fileID: 1829055588}
   m_Father: {fileID: 1026965889}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1079,7 +1078,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: -20, y: 0}
-  m_SizeDelta: {x: 20, y: 20}
+  m_SizeDelta: {x: 18, y: 18}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &348470412
 MonoBehaviour:
@@ -1094,14 +1093,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 42d028fa1a79daf438a83bed6190d737, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ddf6af97ee5fb574a9f23107f5fda6de, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1423,7 +1422,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.77254903, g: 0.77254903, b: 0.77254903, a: 1}
+  m_Color: {r: 0.6, g: 0.6, b: 0.6, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2008,6 +2007,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1717144428}
     m_Modifications:
+    - target: {fileID: 6170433692410197223, guid: a4c323c588981de48baa0dc5ce7a8c46, type: 3}
+      propertyPath: _name
+      value: valve10
+      objectReference: {fileID: 0}
     - target: {fileID: 6170433692410197223, guid: a4c323c588981de48baa0dc5ce7a8c46, type: 3}
       propertyPath: _flowInc
       value: 1
@@ -2668,6 +2671,7 @@ RectTransform:
   - {fileID: 976912966}
   - {fileID: 999166396}
   - {fileID: 246495070}
+  - {fileID: 1829055588}
   - {fileID: 1121539253}
   m_Father: {fileID: 1552525044}
   m_RootOrder: 1
@@ -2811,6 +2815,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1717144428}
     m_Modifications:
+    - target: {fileID: 6170433692410197223, guid: a4c323c588981de48baa0dc5ce7a8c46, type: 3}
+      propertyPath: _name
+      value: valve8
+      objectReference: {fileID: 0}
     - target: {fileID: 6170433692410197223, guid: a4c323c588981de48baa0dc5ce7a8c46, type: 3}
       propertyPath: _flowInc
       value: 1
@@ -3474,7 +3482,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9339623, g: 0.9339623, b: 0.9339623, a: 1}
+  m_Color: {r: 0.73333335, g: 0.73333335, b: 0.73333335, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3530,7 +3538,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1026965889}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -3840,6 +3848,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1717144428}
     m_Modifications:
+    - target: {fileID: 6170433692410197223, guid: a4c323c588981de48baa0dc5ce7a8c46, type: 3}
+      propertyPath: _name
+      value: valve3
+      objectReference: {fileID: 0}
     - target: {fileID: 6170433692410197223, guid: a4c323c588981de48baa0dc5ce7a8c46, type: 3}
       propertyPath: _flowInc
       value: 2
@@ -4368,6 +4380,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1717144428}
     m_Modifications:
     - target: {fileID: 6170433692410197223, guid: a4c323c588981de48baa0dc5ce7a8c46, type: 3}
+      propertyPath: _name
+      value: valve4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6170433692410197223, guid: a4c323c588981de48baa0dc5ce7a8c46, type: 3}
       propertyPath: _flowInc
       value: 2
       objectReference: {fileID: 0}
@@ -4629,6 +4645,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1717144428}
     m_Modifications:
+    - target: {fileID: 6170433692410197223, guid: a4c323c588981de48baa0dc5ce7a8c46, type: 3}
+      propertyPath: _name
+      value: valve13
+      objectReference: {fileID: 0}
     - target: {fileID: 6170433692410197223, guid: a4c323c588981de48baa0dc5ce7a8c46, type: 3}
       propertyPath: _flowInc
       value: 1
@@ -5313,6 +5333,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1717144428}
     m_Modifications:
     - target: {fileID: 6170433692410197223, guid: a4c323c588981de48baa0dc5ce7a8c46, type: 3}
+      propertyPath: _name
+      value: valve11
+      objectReference: {fileID: 0}
+    - target: {fileID: 6170433692410197223, guid: a4c323c588981de48baa0dc5ce7a8c46, type: 3}
       propertyPath: _flowInc
       value: 1
       objectReference: {fileID: 0}
@@ -5794,6 +5818,10 @@ PrefabInstance:
       value: ValveInter12
       objectReference: {fileID: 0}
     - target: {fileID: 4911573662449304582, guid: 99e70e5db423d0b42ac7fdbee5c9532c, type: 3}
+      propertyPath: _name
+      value: valve5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4911573662449304582, guid: 99e70e5db423d0b42ac7fdbee5c9532c, type: 3}
       propertyPath: _flowInc
       value: 1
       objectReference: {fileID: 0}
@@ -5877,7 +5905,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -47, y: -16}
+  m_AnchoredPosition: {x: -47.00006, y: -16.00003}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1717144427
@@ -5991,13 +6019,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1829055587}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 246495070}
-  m_RootOrder: 1
+  m_Father: {fileID: 1026965889}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -6170,6 +6198,10 @@ PrefabInstance:
       value: ValveInter23
       objectReference: {fileID: 0}
     - target: {fileID: 4911573662449304582, guid: 99e70e5db423d0b42ac7fdbee5c9532c, type: 3}
+      propertyPath: _name
+      value: valve6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4911573662449304582, guid: 99e70e5db423d0b42ac7fdbee5c9532c, type: 3}
       propertyPath: _flowInc
       value: 1
       objectReference: {fileID: 0}
@@ -6248,7 +6280,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1706069307017684001, guid: c3b2eb8a6e2321242bea010329fbc3ff, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 114.3
+      value: 510.21
       objectReference: {fileID: 0}
     - target: {fileID: 1706069307017684001, guid: c3b2eb8a6e2321242bea010329fbc3ff, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6284,7 +6316,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1706069307017684001, guid: c3b2eb8a6e2321242bea010329fbc3ff, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -242.85
+      value: -440.81
       objectReference: {fileID: 0}
     - target: {fileID: 1706069307017684001, guid: c3b2eb8a6e2321242bea010329fbc3ff, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -6349,7 +6381,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1706069307017684001, guid: c3b2eb8a6e2321242bea010329fbc3ff, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 72.78
+      value: 411.5
       objectReference: {fileID: 0}
     - target: {fileID: 1706069307017684001, guid: c3b2eb8a6e2321242bea010329fbc3ff, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6385,7 +6417,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1706069307017684001, guid: c3b2eb8a6e2321242bea010329fbc3ff, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 298
+      value: 467.36
       objectReference: {fileID: 0}
     - target: {fileID: 1706069307017684001, guid: c3b2eb8a6e2321242bea010329fbc3ff, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -6609,7 +6641,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 10, y: 0}
+  m_AnchoredPosition: {x: -15, y: 0}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1985949473
@@ -6666,7 +6698,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -6850,6 +6882,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1717144428}
     m_Modifications:
+    - target: {fileID: 6170433692410197223, guid: a4c323c588981de48baa0dc5ce7a8c46, type: 3}
+      propertyPath: _name
+      value: valve9
+      objectReference: {fileID: 0}
     - target: {fileID: 6170433692410197223, guid: a4c323c588981de48baa0dc5ce7a8c46, type: 3}
       propertyPath: _flowInc
       value: 1
@@ -7438,6 +7474,10 @@ PrefabInstance:
       value: ValveInter34
       objectReference: {fileID: 0}
     - target: {fileID: 4911573662449304582, guid: 99e70e5db423d0b42ac7fdbee5c9532c, type: 3}
+      propertyPath: _name
+      value: valve7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4911573662449304582, guid: 99e70e5db423d0b42ac7fdbee5c9532c, type: 3}
       propertyPath: _flowInc
       value: 1
       objectReference: {fileID: 0}
@@ -7695,6 +7735,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1717144428}
     m_Modifications:
+    - target: {fileID: 6170433692410197223, guid: a4c323c588981de48baa0dc5ce7a8c46, type: 3}
+      propertyPath: _name
+      value: valve12
+      objectReference: {fileID: 0}
     - target: {fileID: 6170433692410197223, guid: a4c323c588981de48baa0dc5ce7a8c46, type: 3}
       propertyPath: _flowInc
       value: 1

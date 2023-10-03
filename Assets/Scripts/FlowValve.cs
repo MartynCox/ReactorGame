@@ -9,6 +9,7 @@ using Unity.VisualScripting;
 
 public class FlowValve : Valve, IPointerEnterHandler, IPointerExitHandler
 {
+    [SerializeField] private string _name;
     [SerializeField] private Color[] _colours = {
         Color.green, Color.red, Color.grey, Color.black };
 
@@ -35,6 +36,16 @@ public class FlowValve : Valve, IPointerEnterHandler, IPointerExitHandler
     {
         base.Start();
 
+        // Get values from settings if available
+        if (GameController.Instance.Settings.Valves.ContainsKey(_name))
+        {
+            ValveSettings settings = GameController.Instance.Settings.Valves[_name];
+            _maxFlowRate = settings.MaxFlowDisplay;
+            _minFlowRate = 0;
+            _flowInc = settings.FlowStepSize;
+            SetFlowRateThrottle(settings.FlowRatePerStep);
+        }
+
         // Get the handle and flow rate text
         _handle = transform.GetChild(1).GetComponent<RectTransform>();
         _flowRateText = transform.GetChild(2).GetComponent<TMP_Text>();
@@ -49,11 +60,20 @@ public class FlowValve : Valve, IPointerEnterHandler, IPointerExitHandler
         {
             _maxAngle = _closedAngle - _minimumAngleDifferent * (_flowRateDiff);
         }
+
         if (_flowRateDiff <= 0)
         {
             _flowRateDiff = 1;
         }
 
+        CreateTickLines();
+
+        // Set flow and update appearance
+        SetFlowRate(0, false);
+    }
+
+    private void CreateTickLines()
+    {
         // Create tick lines
         Transform tickBucket = transform.GetChild(0);
 
@@ -80,9 +100,6 @@ public class FlowValve : Valve, IPointerEnterHandler, IPointerExitHandler
             rectTransform.offsetMin = new Vector2(0, 0);
             rectTransform.offsetMax = new Vector2(0, 0);
         }
-
-        // Set flow and update appearance
-        SetFlowRate(0, false);
     }
 
     public void Drag(){

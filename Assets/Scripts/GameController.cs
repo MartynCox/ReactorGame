@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using Unity.VisualScripting;
 
 public class GameController : MonoBehaviour
 {
@@ -57,8 +56,15 @@ public class GameController : MonoBehaviour
     public void Advance()
     {
         _timeUntilAdvance = _stepTime;
+
+        // Find and update the reactor
+        Reactor reactor = FindObjectOfType<Reactor>();
+        if (reactor != null)
+        {
+            reactor.RecordValue();
+        }
+        
         // Find all valves
-        // ValveScript[] valves = GameObject.FindObjectsOfType<ValveScript>();
         foreach (Valve v in _allValves)
         {
             v.Flow();
@@ -68,6 +74,11 @@ public class GameController : MonoBehaviour
         foreach (Valve v in _allValves)
         {
             v.UpdateAppearance();
+        }
+
+        if (reactor != null)
+        {
+            reactor.UpdateState();
         }
     }
 }

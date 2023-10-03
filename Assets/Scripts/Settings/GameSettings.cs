@@ -16,7 +16,9 @@ public class GameSettings
     public Dictionary<string, TankSettings> Tanks { get; set; }
     [JsonProperty("targetTemperature")]
     public int TargetTemperature { get; set; }
-
+    [JsonProperty("valves")]
+    public Dictionary<string, ValveSettings> Valves { get; set; }
+    
     public static GameSettings LoadSettings(String fname)
     {
         string json = System.IO.File.ReadAllText(fname);
@@ -32,4 +34,15 @@ public class TankSettings
     public int Capacity { get; set; }
     [JsonProperty("startLevel")]
     public int StartLevel { get; set; }
+}
+
+[System.Serializable]
+public class ValveSettings
+{
+    [JsonProperty("maxFlowDisplay")]
+    public int MaxFlowDisplay { get; set; }
+    [JsonProperty("flowStepSize")]
+    public int FlowStepSize { get; set; }
+    [JsonProperty("flowRatePerStep")]
+    public float FlowRatePerStep { get; set; }
 }

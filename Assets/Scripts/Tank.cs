@@ -7,8 +7,9 @@ public class Tank : MonoBehaviour
 {
     private RectTransform _water;
     [SerializeField] private string _name;
-    [SerializeField] private int _maxCapacity = 8;
-    [SerializeField] private int _capacity = 0;
+    [SerializeField] private float _maxCapacity = 8;
+    [SerializeField] private float _capacity = 0;
+    private float _mockCapacity = 0;
     private float _waterLevel = 0;
     [SerializeField] private float _animationSpeed = 2.5f;
 
@@ -56,16 +57,16 @@ public class Tank : MonoBehaviour
         }
     }
 
-    public void Update()
+    public virtual void Update()
     {
         // Move the water toward the correct value by the namiation speed
         _waterLevel = Mathf.Lerp(_waterLevel, _capacity, _animationSpeed * Time.deltaTime);
         UpdateWaterDisplay();
     }
 
-    public virtual int AddWater(int flowAmount)
+    public virtual float AddWater(float flowAmount)
     {
-        int lastCapacity = _capacity;
+        float lastCapacity = _capacity;
         _capacity = Mathf.Clamp(_capacity + flowAmount, 0, _maxCapacity);
 
         // Check if the tank has overflowed
@@ -87,7 +88,7 @@ public class Tank : MonoBehaviour
         _water.anchorMax = new Vector2(1, _waterLevel / _maxCapacity - 0.001f);
     }
 
-    public int GetCapacity()
+    public float GetCapacity()
     {
         return _capacity;
     }
@@ -105,6 +106,22 @@ public class Tank : MonoBehaviour
     protected List<Valve> GetInputValves()
     {
         return _inputValves;
+    }
+
+    public void ResetMockCapacity()
+    {
+        _mockCapacity = _capacity;
+    }
+
+    public void MockDrain(float amount)
+    {
+        _mockCapacity -= amount;
+        _mockCapacity = Mathf.Clamp(_mockCapacity, 0, _maxCapacity);
+    }
+
+    public float GetMockCapacity()
+    {
+        return _mockCapacity;
     }
 
     public virtual void UpdateState()

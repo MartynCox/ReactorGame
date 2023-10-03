@@ -7,10 +7,11 @@ using UnityEngine;
 public abstract class Valve : MonoBehaviour
 {
     [SerializeField] private ValveState _state = ValveState.Closed;
-    [SerializeField] private int FlowRate;
+    private int flowRate = 0;
     [SerializeField] private List<Pipe> _connectedPipes;
     [SerializeField] private Tank _inflowTank;
     [SerializeField] private Tank _outflowTank;
+    [SerializeField] private float _flowRateThrottle = 1.0f;
     private List<string> _disabledBy = new List<string>();
 
     public bool IsOpen {
@@ -50,10 +51,10 @@ public abstract class Valve : MonoBehaviour
         if (!IsOpen) { return; }
 
         // Transfer as much water as is available, if no input tanks, assume unlimited water
-        int flowed = -FlowRate;
+        float flowed = -flowRate * _flowRateThrottle;
         if (_inflowTank != null)
         {
-            flowed = _inflowTank.AddWater(-FlowRate);
+            flowed = _inflowTank.AddWater(flowed);
         }
 
         if (_outflowTank != null)
@@ -79,32 +80,45 @@ public abstract class Valve : MonoBehaviour
 
     public bool IsWaterAvailable()
     {
-        return GetWaterAvailable() > 0;
+        if (_inflowTank == null) { return true; }
+
+        return _inflowTank.GetCapacity() > 0;
+
     }
 
-    public int GetWaterAvailable()
+    public float GetWaterAvailable()
     {
         // If there are no inflow tanks, assume unlimited water
-        if (_inflowTank == null) { return int.MaxValue; }
+        if (_inflowTank == null) { return float.MaxValue; }
 
-        return Mathf.Min(_inflowTank.GetCapacity(), FlowRate);
+        float waterAvailable = Mathf.Min(_inflowTank.GetMockCapacity(), flowRate * _flowRateThrottle);
+        _inflowTank.MockDrain(waterAvailable);
+        return waterAvailable;
+    }
+
+    public void ResetMockCapacity()
+    {
+        if (_inflowTank == null) { return; }
+
+        _inflowTank.ResetMockCapacity();
     }
 
     public void SetFlowRate(int flowRate, bool isForcedUpdate)
     {
-        FlowRate = flowRate;
+        int oldFlowRate = this.flowRate;
+        this.flowRate = flowRate;
 
         if (!isForcedUpdate && !IsInteractable) { return; };
 
         // Set state to open or closed
         ValveState oldState = _state;
         if (_state != ValveState.Broken) {
-            _state = FlowRate == 0 ? ValveState.Closed : ValveState.Open;
+            _state = this.flowRate == 0 ? ValveState.Closed : ValveState.Open;
         }
 
         UpdateAppearance();
 
-        if (!isForcedUpdate && oldState == _state) { return; }
+        if (!isForcedUpdate && oldState == _state && oldFlowRate == flowRate) { return; }
         UpdateAllTanks();
     }
 
@@ -122,13 +136,24 @@ public abstract class Valve : MonoBehaviour
 
     public int GetFlowRate()
     {
-        return FlowRate;
+        return flowRate;
     }
 
     protected ValveState GetState()
     {
         return _state;
     }
+
+    public float GetFlowRateThrottle()
+    {
+        return _flowRateThrottle;
+    }
+
+    protected void SetFlowRateThrottle(float throttle)
+    {
+        _flowRateThrottle = throttle;
+    }
+
     public void SetEnabled(bool isEnabled, string tankName)
     {
         // Don't do anything if the valve is broken

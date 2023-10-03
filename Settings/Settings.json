@@ -27,5 +27,17 @@
       "capacity": 9,
       "startLevel": 1
     }
+  },
+  "valves": {
+    "valve1": {
+      "maxFlowDisplay": 3,
+      "flowStepSize": 1,
+      "flowRatePerStep": 1.0
+    },
+    "valve2": {
+      "maxFlowDisplay": 3,
+      "flowStepSize": 1,
+      "flowRatePerStep": 1.0
+    }
   }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine.UI;
+using System;
 
 public class TableManager : MonoBehaviour
 {
@@ -24,12 +25,36 @@ public class TableManager : MonoBehaviour
         Color bad = _colours[2];
 
         AddTableValue("Flow", "Temp", header);
-        AddTableValue("5+", "100", good);
-        AddTableValue("4", "120", good);
-        AddTableValue("3", "160", bad);
-        AddTableValue("2", "200", bad);
-        AddTableValue("1", "250", bad);
-        AddTableValue("0", "300", bad);
+
+        // Read the data from the settings
+        Dictionary<int, int> flowTemperatures = GameController.Instance.Settings.FlowTemperatures;
+        int targetTemp = GameController.Instance.Settings.TargetTemperature;
+
+        // Sort the data by flow rate descending
+        List<int> flows = new List<int>(flowTemperatures.Keys);
+        flows.Sort();
+        flows.Reverse();
+
+        // Add the data to the table
+        bool isFirst = true;
+        foreach (int flow in flows)
+        {
+            int temperature = flowTemperatures[flow];
+            String flowString = flow.ToString();
+            if (isFirst){
+                isFirst = false;
+                flowString += "+";
+            }
+
+            if (temperature <= targetTemp)
+            {
+                AddTableValue(flowString, temperature.ToString(), good);
+            }
+            else
+            {
+                AddTableValue(flowString, temperature.ToString(), bad);
+            }
+        }
     }
 
     void AddTableValue(string flow, string temperature, Color? color = null)

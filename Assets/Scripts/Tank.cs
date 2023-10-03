@@ -9,33 +9,44 @@ public class Tank : MonoBehaviour
     [SerializeField] private string _name;
     [SerializeField] private int _maxCapacity = 8;
     [SerializeField] private int _capacity = 0;
-    [SerializeField] private float _waterLevel = 0;
-    [SerializeField] private float _animationSpeed = 1f;
+    private float _waterLevel = 0;
+    [SerializeField] private float _animationSpeed = 2.5f;
 
     [SerializeField] private float _lineThickness = 0.02f;
+    [SerializeField] private bool _hasLineMarkings = true;
 
-    [SerializeField] private List<Valve> _inputValves;
-    [SerializeField] private List<Valve> _outputValves;
+    private List<Valve> _inputValves = new List<Valve>();
+    private List<Valve> _outputValves = new List<Valve>();
 
     void Start()
     {
-        // Get capacity from settings
-        _maxCapacity = GameController.Instance.Settings.Tanks[_name].Capacity;
-        _capacity = GameController.Instance.Settings.Tanks[_name].StartLevel;
+        // Get capacity from settings if it exists
+        if (GameController.Instance.Settings.Tanks.ContainsKey(_name))
+        {
+            _maxCapacity = GameController.Instance.Settings.Tanks[_name].Capacity;
+            _capacity = GameController.Instance.Settings.Tanks[_name].StartLevel;
+        }
 
         // Get the water display
         _water = transform.GetChild(0).GetComponent<RectTransform>();
         _waterLevel = _capacity;
 
+        if (_hasLineMarkings)
+        {
+            CreateLineMarkings();
+        }
+    }
 
+    private void CreateLineMarkings()
+    {
         // Create the line markings
         for (int i = 1; i < _maxCapacity; i++)
         {
             GameObject line = new GameObject("Line");
             line.transform.SetParent(transform);
             RectTransform lineTransform = line.AddComponent<RectTransform>();
-            lineTransform.anchorMin = new Vector2(0, (float)i / _maxCapacity - _lineThickness/2f);
-            lineTransform.anchorMax = new Vector2(0.2f, (float)i / _maxCapacity + _lineThickness/2f);
+            lineTransform.anchorMin = new Vector2(0, (float)i / _maxCapacity - _lineThickness / 2f);
+            lineTransform.anchorMax = new Vector2(0.2f, (float)i / _maxCapacity + _lineThickness / 2f);
             lineTransform.offsetMin = new Vector2(0, 0);
             lineTransform.offsetMax = new Vector2(0, 0);
             lineTransform.pivot = new Vector2(0.5f, 0.5f);
@@ -52,7 +63,7 @@ public class Tank : MonoBehaviour
         UpdateWaterDisplay();
     }
 
-    public int AddWater(int flowAmount)
+    public virtual int AddWater(int flowAmount)
     {
         int lastCapacity = _capacity;
         _capacity = Mathf.Clamp(_capacity + flowAmount, 0, _maxCapacity);
@@ -91,7 +102,12 @@ public class Tank : MonoBehaviour
         _outputValves.Add(valve);
     }
 
-    public void UpdateState()
+    protected List<Valve> GetInputValves()
+    {
+        return _inputValves;
+    }
+
+    public virtual void UpdateState()
     {
         // Check if the tank is being filled or drained
         bool isFilling = false;

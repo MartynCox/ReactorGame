@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using UnityEditor.UIElements;
 using UnityEngine;
 
 public abstract class Valve : MonoBehaviour
 {
     [SerializeField] private ValveState _state = ValveState.Closed;
-    [SerializeField] private int FlowRate = 1;
+    [SerializeField] private int FlowRate;
     [SerializeField] private List<Pipe> _connectedPipes;
     [SerializeField] private Tank _inflowTank;
     [SerializeField] private Tank _outflowTank;
@@ -36,7 +37,7 @@ public abstract class Valve : MonoBehaviour
     public virtual void UpdateAppearance()
     {
         // Set each pipe to be full or not full
-        bool waterAvailable = CheckWaterAvailable();
+        bool waterAvailable = IsWaterAvailable();
         foreach (Pipe p in _connectedPipes)
         {
             p.SetWater(IsOpen && waterAvailable);
@@ -63,6 +64,8 @@ public abstract class Valve : MonoBehaviour
 
     public virtual void Break()
     {
+        if ( GetState() == ValveState.Broken){ return;}
+
         // Set the state to broken
         _state = ValveState.Broken;
         SetFlowRate(0, true);
@@ -74,14 +77,17 @@ public abstract class Valve : MonoBehaviour
         }
     }
 
-    private bool CheckWaterAvailable()
+    public bool IsWaterAvailable()
+    {
+        return GetWaterAvailable() > 0;
+    }
+
+    public int GetWaterAvailable()
     {
         // If there are no inflow tanks, assume unlimited water
-        if (_inflowTank == null) { return true; }
+        if (_inflowTank == null) { return int.MaxValue; }
 
-        if (_inflowTank.GetCapacity() == 0) { return false; }
-
-        return true;
+        return Mathf.Min(_inflowTank.GetCapacity(), FlowRate);
     }
 
     public void SetFlowRate(int flowRate, bool isForcedUpdate)

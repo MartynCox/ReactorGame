@@ -1,6 +1,7 @@
 {
   "cycleDuration": 25,
   "breakTankOnOverflow": true,
+  "targetTemperature": 120,
   "flowTemperatures": {
     "5": 100,
     "4": 120,

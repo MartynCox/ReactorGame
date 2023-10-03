@@ -10,11 +10,12 @@ public class GameSettings
     public int CycleDuration { get; set; }
     [JsonProperty("breakTankOnOverflow")]
     public bool BreakTankOnOverflow { get; set; }
-    [JsonProperty("flowTemperature")]
+    [JsonProperty("flowTemperatures")]
     public Dictionary<int, int> FlowTemperatures { get; set; }
     [JsonProperty("tanks")]
     public Dictionary<string, TankSettings> Tanks { get; set; }
-
+    [JsonProperty("targetTemperature")]
+    public int TargetTemperature { get; set; }
 
     public static GameSettings LoadSettings(String fname)
     {

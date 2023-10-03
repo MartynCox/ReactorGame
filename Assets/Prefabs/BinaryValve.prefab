@@ -92,10 +92,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _state: 1
-  FlowRate: 1
+  FlowRate: 0
   _connectedPipes: []
-  _inflowTanks: []
-  _outflowTanks: []
+  _inflowTank: {fileID: 0}
+  _outflowTank: {fileID: 0}
   _colours:
   - {r: 0, g: 0.4811321, b: 0.06594198, a: 1}
   - {r: 0.74509805, g: 0, b: 0, a: 1}

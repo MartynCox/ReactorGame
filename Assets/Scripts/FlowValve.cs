@@ -49,6 +49,10 @@ public class FlowValve : Valve, IPointerEnterHandler, IPointerExitHandler
         {
             _maxAngle = _closedAngle - _minimumAngleDifferent * (_flowRateDiff);
         }
+        if (_flowRateDiff <= 0)
+        {
+            _flowRateDiff = 1;
+        }
 
         // Create tick lines
         Transform tickBucket = transform.GetChild(0);

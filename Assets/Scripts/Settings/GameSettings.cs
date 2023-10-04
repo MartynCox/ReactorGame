@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.IO;
 using Newtonsoft.Json;
+using UnityEngine.Scripting;
 
-[System.Serializable]
+[Serializable]
+[Preserve]
 public class GameSettings
 {
     [JsonProperty("cycleDuration")]
@@ -21,13 +23,28 @@ public class GameSettings
     
     public static GameSettings LoadSettings(String fname)
     {
-        string json = System.IO.File.ReadAllText(fname);
-        GameSettings settings = JsonConvert.DeserializeObject<GameSettings>(json);
-        return settings;
+        try
+        {
+            string json = System.IO.File.ReadAllText(fname);
+            GameSettings settings = JsonConvert.DeserializeObject<GameSettings>(json);
+            return settings;
+        }
+        catch (FileNotFoundException)
+        {
+            Console.WriteLine("Settings file not found: " + fname);
+            return null;
+        }
+    }
+
+    public void SaveSettings(String fname)
+    {
+        string json = JsonConvert.SerializeObject(this, Formatting.Indented);
+        System.IO.File.WriteAllText(fname, json);
     }
 }
 
-[System.Serializable]
+[Serializable]
+[Preserve]
 public class TankSettings
 {
     [JsonProperty("capacity")]
@@ -36,7 +53,8 @@ public class TankSettings
     public int StartLevel { get; set; }
 }
 
-[System.Serializable]
+[Serializable]
+[Preserve]
 public class ValveSettings
 {
     [JsonProperty("maxFlowDisplay")]

@@ -37,7 +37,8 @@ public class FlowValve : Valve, IPointerEnterHandler, IPointerExitHandler
         base.Start();
 
         // Get values from settings if available
-        if (GameController.Instance.Settings.Valves.ContainsKey(_name))
+        if (GameController.Instance.Settings != null
+            && GameController.Instance.Settings.Valves.ContainsKey(_name))
         {
             ValveSettings settings = GameController.Instance.Settings.Valves[_name];
             _maxFlowRate = settings.MaxFlowDisplay;

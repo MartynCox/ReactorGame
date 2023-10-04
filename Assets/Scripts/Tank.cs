@@ -22,7 +22,8 @@ public class Tank : MonoBehaviour
     void Start()
     {
         // Get capacity from settings if it exists
-        if (GameController.Instance.Settings.Tanks.ContainsKey(_name))
+        if (GameController.Instance.HasSettings()
+            && GameController.Instance.Settings.Tanks.ContainsKey(_name))
         {
             _maxCapacity = GameController.Instance.Settings.Tanks[_name].Capacity;
             _capacity = GameController.Instance.Settings.Tanks[_name].StartLevel;

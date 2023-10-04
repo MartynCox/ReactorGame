@@ -27,6 +27,8 @@ public class TableManager : MonoBehaviour
         AddTableValue("Flow", "Temp", header);
 
         // Read the data from the settings
+        if (!GameController.Instance.HasSettings()) { return; }
+
         Dictionary<int, int> flowTemperatures = GameController.Instance.Settings.FlowTemperatures;
         int targetTemp = GameController.Instance.Settings.TargetTemperature;
 

@@ -24,15 +24,27 @@ public class GameController : MonoBehaviour
             return;
         }
         Instance = this;
-        
+
         // Read the settings from a file
+        Settings = new GameSettings();
+        Settings.SaveSettings(Application.persistentDataPath + "Settings2.json");
+        Settings = null;
+
         Settings = GameSettings.LoadSettings("Settings/settings.json");
-        _stepTime = Settings.CycleDuration;
+        if (Settings != null)
+        {
+            _stepTime = Settings.CycleDuration;
+        }
     }
 
     void Start()
     {
         _timeUntilAdvance = _stepTime;
+    }
+
+    public bool HasSettings()
+    {
+        return Settings != null;
     }
 
     private void Update()

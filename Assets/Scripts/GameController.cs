@@ -30,7 +30,7 @@ public class GameController : MonoBehaviour
         Settings.SaveSettings(Application.persistentDataPath + "Settings2.json");
         Settings = null;
 
-        Settings = GameSettings.LoadSettings("Settings/settings.json");
+        Settings = GameSettings.LoadSettings(Application.persistentDataPath + "Settings2.json");
         if (Settings != null)
         {
             _stepTime = Settings.CycleDuration;

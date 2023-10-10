@@ -22,11 +22,11 @@ public class Tank : MonoBehaviour
     void Start()
     {
         // Get capacity from settings if it exists
-        if (GameController.Instance.HasSettings()
-            && GameController.Instance.Settings.Tanks.ContainsKey(_name))
+        if (ScenarioController.Instance.HasSettings()
+            && ScenarioController.Instance.Settings.Tanks.ContainsKey(_name))
         {
-            _maxCapacity = GameController.Instance.Settings.Tanks[_name].Capacity;
-            _capacity = GameController.Instance.Settings.Tanks[_name].StartLevel;
+            _maxCapacity = ScenarioController.Instance.Settings.Tanks[_name].Capacity;
+            _capacity = ScenarioController.Instance.Settings.Tanks[_name].StartLevel;
         }
 
         // Get the water display
@@ -71,7 +71,7 @@ public class Tank : MonoBehaviour
         _capacity = Mathf.Clamp(_capacity + flowAmount, 0, _maxCapacity);
 
         // Check if the tank has overflowed
-        if (GameController.Instance.Settings.BreakTankOnOverflow && lastCapacity + flowAmount > _maxCapacity)
+        if (ScenarioController.Instance.Settings.BreakTankOnOverflow && lastCapacity + flowAmount > _maxCapacity)
         {
             _waterLevel = _capacity;
             foreach (Valve valve in _inputValves)

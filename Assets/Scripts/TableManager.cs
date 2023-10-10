@@ -27,10 +27,10 @@ public class TableManager : MonoBehaviour
         AddTableValue("Flow", "Temp", header);
 
         // Read the data from the settings
-        if (!GameController.Instance.HasSettings()) { return; }
+        if (!ScenarioController.Instance.HasSettings()) { return; }
 
-        Dictionary<int, int> flowTemperatures = GameController.Instance.Settings.FlowTemperatures;
-        int targetTemp = GameController.Instance.Settings.TargetTemperature;
+        Dictionary<int, int> flowTemperatures = ScenarioController.Instance.Settings.FlowTemperatures;
+        int targetTemp = ScenarioController.Instance.Settings.TargetTemperature;
 
         // Sort the data by flow rate descending
         List<int> flows = new List<int>(flowTemperatures.Keys);

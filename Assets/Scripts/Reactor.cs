@@ -19,10 +19,10 @@ public class Reactor : Tank
         // Set up the slider
         float minTemp = 0;
         float maxTemp = 300;
-        if (GameController.Instance.HasSettings())
+        if (ScenarioController.Instance.HasSettings())
         {
-            maxTemp = GameController.Instance.Settings.FlowTemperatures[GetMinFlowRate()];
-            _targetTemperature = GameController.Instance.Settings.TargetTemperature;
+            maxTemp = ScenarioController.Instance.Settings.FlowTemperatures[GetMinFlowRate()];
+            _targetTemperature = ScenarioController.Instance.Settings.TargetTemperature;
         }
         
         _temperatureSlider.minValue = minTemp;
@@ -32,7 +32,6 @@ public class Reactor : Tank
         // Set the target marker
         _currentTemperature = _targetTemperature;
         float sliderHeight = _temperatureSlider.GetComponent<RectTransform>().rect.height;
-        Debug.Log("slider height : " + sliderHeight);
         RectTransform markerTransform = _targetMarker.GetComponent<RectTransform>();
         markerTransform.localPosition = new Vector3(
             markerTransform.localPosition.x,
@@ -99,12 +98,12 @@ public class Reactor : Tank
 
     private float GetTemperature(float flow)
     {
-        if (!GameController.Instance.HasSettings()) { return 0; }
+        if (!ScenarioController.Instance.HasSettings()) { return 0; }
 
         int upperFlow = Mathf.CeilToInt(flow);
         int lowerFlow = Mathf.FloorToInt(flow);
 
-        Dictionary<int, int> flowTemperatures = GameController.Instance.Settings.FlowTemperatures;
+        Dictionary<int, int> flowTemperatures = ScenarioController.Instance.Settings.FlowTemperatures;
 
         // Find max and min flow rates
         int maxFlow = GetMaxFlowRate();
@@ -114,8 +113,8 @@ public class Reactor : Tank
         upperFlow = Mathf.Clamp(upperFlow, minFlow, maxFlow);
         lowerFlow = Mathf.Clamp(lowerFlow, minFlow, maxFlow);
 
-        int upperTemp = GameController.Instance.Settings.FlowTemperatures[upperFlow];
-        int lowerTemp = GameController.Instance.Settings.FlowTemperatures[lowerFlow];
+        int upperTemp = ScenarioController.Instance.Settings.FlowTemperatures[upperFlow];
+        int lowerTemp = ScenarioController.Instance.Settings.FlowTemperatures[lowerFlow];
 
         // If the flow rate is exactly one of the temperatures, return that temperature
         if (upperFlow == lowerFlow) { return upperTemp; }
@@ -127,10 +126,10 @@ public class Reactor : Tank
 
     private int GetMinFlowRate()
     {
-        if (!GameController.Instance.HasSettings()) { return 0; }
+        if (!ScenarioController.Instance.HasSettings()) { return 0; }
 
         int minFlow = 0;
-        Dictionary<int, int> flowTemperatures = GameController.Instance.Settings.FlowTemperatures;
+        Dictionary<int, int> flowTemperatures = ScenarioController.Instance.Settings.FlowTemperatures;
         foreach (int flowRate in flowTemperatures.Keys)
         {
             if (flowRate < minFlow) { minFlow = flowRate; }
@@ -140,10 +139,10 @@ public class Reactor : Tank
 
     private int GetMaxFlowRate()
     {
-        if (!GameController.Instance.HasSettings()) { return 0; }
+        if (!ScenarioController.Instance.HasSettings()) { return 0; }
 
         int maxFlow = 0;
-        Dictionary<int, int> flowTemperatures = GameController.Instance.Settings.FlowTemperatures;
+        Dictionary<int, int> flowTemperatures = ScenarioController.Instance.Settings.FlowTemperatures;
         foreach (int flowRate in flowTemperatures.Keys)
         {
             if (flowRate > maxFlow) { maxFlow = flowRate; }

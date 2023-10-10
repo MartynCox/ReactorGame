@@ -13,38 +13,14 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private List<Valve> _allValves;
 
-    public static GameController Instance { get; private set; }
-    public GameSettings Settings { get; set; }
-
-    private void Awake()
+    private void Start()
     {
-        if (Instance != null && Instance != this)
+        if (ScenarioController.Instance.Settings != null)
         {
-            Destroy(gameObject);
-            return;
+            _stepTime = ScenarioController.Instance.Settings.CycleDuration;
         }
-        Instance = this;
 
-        // Read the settings from a file
-        Settings = new GameSettings();
-        Settings.SaveSettings(Application.persistentDataPath + "Settings2.json");
-        Settings = null;
-
-        Settings = GameSettings.LoadSettings(Application.persistentDataPath + "Settings2.json");
-        if (Settings != null)
-        {
-            _stepTime = Settings.CycleDuration;
-        }
-    }
-
-    void Start()
-    {
         _timeUntilAdvance = _stepTime;
-    }
-
-    public bool HasSettings()
-    {
-        return Settings != null;
     }
 
     private void Update()

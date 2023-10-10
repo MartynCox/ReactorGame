@@ -21,19 +21,10 @@ public class GameSettings
     [JsonProperty("valves")]
     public Dictionary<string, ValveSettings> Valves { get; set; }
     
-    public static GameSettings LoadSettings(String fname)
+    public static GameSettings LoadSettings(String json)
     {
-        try
-        {
-            string json = System.IO.File.ReadAllText(fname);
-            GameSettings settings = JsonConvert.DeserializeObject<GameSettings>(json);
-            return settings;
-        }
-        catch (FileNotFoundException)
-        {
-            Console.WriteLine("Settings file not found: " + fname);
-            return null;
-        }
+        GameSettings settings = JsonConvert.DeserializeObject<GameSettings>(json);
+        return settings;
     }
 
     public void SaveSettings(String fname)

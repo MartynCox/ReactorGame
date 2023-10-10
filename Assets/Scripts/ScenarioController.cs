@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 
 public class ScenarioController : MonoBehaviour
 {
-    [SerializeField] private const string _settingsUri = "https://reactorgame.azurewebsites.net/settings?handler=json";
+    [SerializeField] private const string _settingsUri = "https://reactorgame.azurewebsites.net/Settings?handler=json";
 
     public static ScenarioController Instance { get; private set; }
     public GameSettings Settings { get; private set; }
@@ -45,7 +45,8 @@ public class ScenarioController : MonoBehaviour
                 break;
             case UnityWebRequest.Result.Success:
                 Debug.Log(webRequest.downloadHandler.text);
-                newSettings = JsonUtility.FromJson<GameSettings>(webRequest.downloadHandler.text);
+                newSettings = GameSettings.LoadSettings(webRequest.downloadHandler.text);
+                Debug.Log(newSettings.CycleDuration);
                 break;
         }
 

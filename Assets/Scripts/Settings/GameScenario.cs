@@ -2,12 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using UnityEngine;
 using UnityEngine.Scripting;
 
 [Serializable]
 [Preserve]
-public class GameSettings
+public class GameScenario
 {
+    [JsonProperty("scenarioName")]
+    public string ScenarioName { get; set; }
+    [JsonProperty("totalCycles")]
+    public int TotalCycles { get; set; }
     [JsonProperty("cycleDuration")]
     public int CycleDuration { get; set; }
     [JsonProperty("breakTankOnOverflow")]
@@ -21,12 +26,13 @@ public class GameSettings
     [JsonProperty("valves")]
     public Dictionary<string, ValveSettings> Valves { get; set; }
     
-    public static GameSettings LoadSettings(String json)
+    public static GameScenario LoadSettings(String json)
     {
-        GameSettings settings = JsonConvert.DeserializeObject<GameSettings>(json);
-        return settings;
+        GameScenario scenario = JsonConvert.DeserializeObject<GameScenario>(json);
+        return scenario;
     }
 
+    [Preserve]
     public void SaveSettings(String fname)
     {
         string json = JsonConvert.SerializeObject(this, Formatting.Indented);

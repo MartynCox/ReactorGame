@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System.ComponentModel.Design;
 
 public class GameController : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private float _stepTime = 15f;
     [SerializeField] private TMP_Text _stepText;
     private float _timeUntilAdvance;
+    private int _currentStep = 0;
+    private int _totalSteps = 0;
 
     [SerializeField]
     private List<Valve> _allValves;
@@ -18,9 +21,11 @@ public class GameController : MonoBehaviour
         if (ScenarioController.Instance.Settings != null)
         {
             _stepTime = ScenarioController.Instance.Settings.CycleDuration;
+            _totalSteps = ScenarioController.Instance.Settings.TotalCycles;
         }
 
         _timeUntilAdvance = _stepTime;
+        _currentStep = 0;
     }
 
     private void Update()
@@ -41,6 +46,7 @@ public class GameController : MonoBehaviour
 
     public void Advance()
     {
+        _currentStep++;
         _timeUntilAdvance = _stepTime;
 
         // Find and record water flow to reactor
@@ -66,6 +72,13 @@ public class GameController : MonoBehaviour
         if (reactor != null)
         {
             reactor.UpdateState();
+        }
+
+        // Check if we're done
+        if (_currentStep >= _totalSteps)
+        {
+            // Return to the menu
+            ScenarioController.Instance.EndScenario();
         }
     }
 }

@@ -16,7 +16,7 @@ public class MenuController : MonoBehaviour
 
     private void Start()
     {
-        SetScenario();
+        //SetScenario();
     }
 
     public void SetScenario()

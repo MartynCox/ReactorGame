@@ -69,14 +69,14 @@ public class Reactor : Tank
 
     public override void UpdateState()
     {
-        float flow = GetFlow();
-        _currentTemperature = GetTemperature(flow);
+        float flow = CalculateFlow();
+        _currentTemperature = FindTemperatureByFlow(flow);
 
         // Add degree symbol to temperature and update display
         _temperatureSlider.GetComponentInChildren<TMP_Text>().text = _currentTemperature.ToString() + "°";
     }
 
-    private float GetFlow()
+    private float CalculateFlow()
     {
         // Count the total flow rate to the reactor
         float totalFlowRate = 0;
@@ -96,7 +96,7 @@ public class Reactor : Tank
         return totalFlowRate;
     }
 
-    private float GetTemperature(float flow)
+    private float FindTemperatureByFlow(float flow)
     {
         if (!ScenarioController.Instance.HasSettings()) { return 0; }
 
@@ -152,7 +152,11 @@ public class Reactor : Tank
 
     public void RecordValue()
     {
-        float flow = GetFlow();
         UpdateState();
+    }
+
+    public float GetTemperature()
+    {
+        return _currentTemperature;
     }
 }

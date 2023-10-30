@@ -1,9 +1,11 @@
 using Assets.Scripts.Settings;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.Scripting;
+using Newtonsoft;
 
 [Preserve]
 public class ScenarioController : MonoBehaviour
@@ -13,6 +15,7 @@ public class ScenarioController : MonoBehaviour
     public static ScenarioController Instance { get; private set; }
 
     private ScenarioSet _settings;
+    private GameResults _results;
 
     private int _currentScenarioIndex = 0;
     public GameScenario Settings
@@ -38,18 +41,32 @@ public class ScenarioController : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
+        // Initialise results
+        _results = new GameResults();
+
+        // Load the settings
         StartCoroutine(GetSettings());
         _currentScenarioIndex = 0;
         FindAnyObjectByType<MenuController>().ReadyScenario(false);
     }
 
-    public void EndScenario()
+    public void EndScenario(string result)
     {
+        // Add the result to the list
+        _results.ResultList.Add(result);
+
+        // Move to the next scenario
         _currentScenarioIndex++;
         if (_currentScenarioIndex >= _settings.Scenarios.Count)
         {
             // End the game
             UnityEngine.SceneManagement.SceneManager.LoadScene("End");
+            _results.EndTimestamp = System.DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+            // Convert the results to JSON
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(_results);
+            Debug.Log(json);
+            // Copy to clipboard
+            GUIUtility.systemCopyBuffer = json;
             return;
         }
 
@@ -83,6 +100,8 @@ public class ScenarioController : MonoBehaviour
         }
 
         _settings = newSettings;
+        _results.GameName = _settings.Name;
+        _results.StartTimestamp = System.DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
 
         // Ready the button if we're in the menu
         if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Menu")

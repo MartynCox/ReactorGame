@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.ComponentModel.Design;
+using Assets.Scripts;
 
 public class GameController : MonoBehaviour
 {
@@ -16,6 +17,10 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private List<Valve> _allValves;
 
+    private ResultOutput _resultOutput;
+
+    private bool _isPaused = false;
+
     private void Start()
     {
         if (ScenarioController.Instance.Settings != null)
@@ -26,10 +31,14 @@ public class GameController : MonoBehaviour
 
         _timeUntilAdvance = _stepTime;
         _currentStep = 0;
+        _resultOutput = new ResultOutput();
+        _isPaused = false;
     }
 
     private void Update()
     {
+        if (_isPaused) { return; }
+
         _timeUntilAdvance -= Time.deltaTime;
 
         _advanceBar.GetComponent<RectTransform>().anchorMax = 
@@ -74,11 +83,31 @@ public class GameController : MonoBehaviour
             reactor.UpdateState();
         }
 
+        // After all components have been updated, record the results
+        RecordResults(reactor);
+
         // Check if we're done
         if (_currentStep >= _totalSteps)
         {
-            // Return to the menu
-            ScenarioController.Instance.EndScenario();
+            _isPaused = true;
+            ScenarioController.Instance.EndScenario(_resultOutput.ToCSV());
         }
+    }
+
+    private void RecordResults(Reactor reactor)
+    {
+        ResultRecord record = new ResultRecord();
+
+        record.SetTemperature(reactor.GetTemperature());
+        record.SetTime(_currentStep);
+
+        List<int> flows = new List<int>();
+        foreach (Valve v in _allValves)
+        {
+            flows.Add(v.GetFlowRate());
+        }
+
+        record.SetFlows(flows);
+        _resultOutput.AddRecord(record);
     }
 }

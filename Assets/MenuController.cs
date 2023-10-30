@@ -16,7 +16,10 @@ public class MenuController : MonoBehaviour
 
     private void Start()
     {
-        //SetScenario();
+        if (ScenarioController.Instance.HasSettings())
+        {
+            SetScenario();
+        }
     }
 
     public void SetScenario()

@@ -11,6 +11,7 @@ using Newtonsoft;
 public class ScenarioController : MonoBehaviour
 {
     [SerializeField] private string _settingsUri = "https://reactorgame.azurewebsites.net/Settings?handler=json";
+    [SerializeField] private float _sceneDelay = 3;
 
     public static ScenarioController Instance { get; private set; }
 
@@ -18,6 +19,7 @@ public class ScenarioController : MonoBehaviour
     private GameResults _results;
 
     private int _currentScenarioIndex = 0;
+
     public GameScenario Settings
     {
         get
@@ -60,7 +62,7 @@ public class ScenarioController : MonoBehaviour
         if (_currentScenarioIndex >= _settings.Scenarios.Count)
         {
             // End the game
-            UnityEngine.SceneManagement.SceneManager.LoadScene("End");
+            StartCoroutine(LoadSceneWithDelay("End", _sceneDelay));
             _results.EndTimestamp = System.DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
             // Convert the results to JSON
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(_results);
@@ -71,7 +73,13 @@ public class ScenarioController : MonoBehaviour
         }
 
         // Return to the menu
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
+        StartCoroutine(LoadSceneWithDelay("Menu", _sceneDelay));
+    }
+
+    private IEnumerator LoadSceneWithDelay(string scene, float delaySeconds)
+    {
+        yield return new WaitForSeconds(delaySeconds);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(scene);
     }
 
     public bool HasSettings()

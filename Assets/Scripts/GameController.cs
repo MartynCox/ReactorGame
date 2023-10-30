@@ -4,12 +4,15 @@ using UnityEngine;
 using TMPro;
 using System.ComponentModel.Design;
 using Assets.Scripts;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
     [SerializeField] private Transform _advanceBar;
     [SerializeField] private float _stepTime = 15f;
     [SerializeField] private TMP_Text _stepText;
+    [SerializeField] private Image _overlay;
+    [SerializeField] private float _fadeOutTime = 3f;
     private float _timeUntilAdvance;
     private int _currentStep = 0;
     private int _totalSteps = 0;
@@ -20,6 +23,7 @@ public class GameController : MonoBehaviour
     private ResultOutput _resultOutput;
 
     private bool _isPaused = false;
+    private bool _isFinished = false;
 
     private void Start()
     {
@@ -33,10 +37,13 @@ public class GameController : MonoBehaviour
         _currentStep = 0;
         _resultOutput = new ResultOutput();
         _isPaused = false;
+        _isFinished = false;
     }
 
     private void Update()
     {
+        CheckShouldFadeOut();
+
         if (_isPaused) { return; }
 
         _timeUntilAdvance -= Time.deltaTime;
@@ -53,8 +60,19 @@ public class GameController : MonoBehaviour
         }
     }
 
+    private void CheckShouldFadeOut()
+    {
+        if (!_isFinished) { return; }
+
+        Color c = _overlay.color;
+        c.a += Time.deltaTime / _fadeOutTime;
+        _overlay.color = c;
+    }
+
     public void Advance()
     {
+        if (_isPaused) { return; }
+
         _currentStep++;
         _timeUntilAdvance = _stepTime;
 
@@ -90,6 +108,7 @@ public class GameController : MonoBehaviour
         if (_currentStep >= _totalSteps)
         {
             _isPaused = true;
+            _isFinished = true;
             ScenarioController.Instance.EndScenario(_resultOutput.ToCSV());
         }
     }

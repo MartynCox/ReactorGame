@@ -12,6 +12,9 @@ namespace Assets.Scripts.Settings
         [JsonProperty("gameName")]
         public string GameName { get; set; }
 
+        [JsonProperty("videoShown")]
+        public string VideoShown { get; set; }
+
         [JsonProperty("startTimestamp")]
         public string StartTimestamp { get; set; }
 

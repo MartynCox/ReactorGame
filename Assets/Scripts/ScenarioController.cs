@@ -6,11 +6,13 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.Scripting;
 using Newtonsoft;
+using static System.Net.WebRequestMethods;
 
 [Preserve]
 public class ScenarioController : MonoBehaviour
 {
-    [SerializeField] private string _settingsUri = "https://reactorgame.azurewebsites.net/Settings?handler=json";
+    [SerializeField] private string _settingsUrl = "https://reactorgame.azurewebsites.net/Settings?handler=json";
+    [SerializeField] private string[] _videoUrls;
     [SerializeField] private float _sceneDelay = 3;
 
     public static ScenarioController Instance { get; private set; }
@@ -87,7 +89,7 @@ public class ScenarioController : MonoBehaviour
 
     private IEnumerator GetSettings()
     {
-        using UnityWebRequest webRequest = UnityWebRequest.Get(_settingsUri);
+        using UnityWebRequest webRequest = UnityWebRequest.Get(_settingsUrl);
 
         yield return webRequest.SendWebRequest();
 
@@ -127,4 +129,11 @@ public class ScenarioController : MonoBehaviour
         return _settings.Scenarios.Count;
     }
 
+    public string GetRandomVideoUrl()
+    {
+        string url = _videoUrls[Random.Range(0, _videoUrls.Length)];
+        // Get the video name as the last part of the URL
+        _results.VideoShown = url.Substring(url.LastIndexOf('/') + 1);
+        return url;
+    }
 }

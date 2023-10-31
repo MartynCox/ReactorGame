@@ -27,6 +27,7 @@ public class MenuController : MonoBehaviour
             // Show the video
             _video.gameObject.SetActive(true);
             VideoPlayer videoPlayer = _video.GetComponentInChildren<VideoPlayer>();
+            videoPlayer.url = ScenarioController.Instance.GetRandomVideoUrl();
             videoPlayer.loopPointReached += EndVideoReached;
             _hidenWhenVideo.gameObject.SetActive(false);
         }

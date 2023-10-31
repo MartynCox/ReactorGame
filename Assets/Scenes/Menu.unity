@@ -885,7 +885,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ab0a5da056f343429e81b573a356e5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pointerTexture: {fileID: 2800000, guid: 4c77372cc3eb6b447b6a47bfd68e42ff, type: 3}
+  _pointerTexture: {fileID: 2800000, guid: a6fda7570fec58946aa6030e80acb4e6, type: 3}
 --- !u!1 &649316309
 GameObject:
   m_ObjectHideFlags: 0
@@ -915,7 +915,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c819ce6a108e5124f8095363999fdf65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _settingsUri: https://reactorgame.azurewebsites.net/Settings?handler=json
+  _settingsUrl: https://reactorgame.azurewebsites.net/Settings?handler=json
+  _videoUrls:
+  - https://reactorgame.azurewebsites.net/video/Intro.mp4
   _sceneDelay: 3
 --- !u!4 &649316311
 Transform:
@@ -1673,7 +1675,7 @@ VideoPlayer:
   - 1
   m_Url: https://reactorgame.azurewebsites.net/video/Intro.mp4
   m_EnabledAudioTracks: 01
-  m_DirectAudioMutes: 01
+  m_DirectAudioMutes: 00
   m_ControlledAudioTrackCount: 1
   m_PlayOnAwake: 0
   m_SkipOnDrop: 1

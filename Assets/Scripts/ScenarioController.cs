@@ -67,8 +67,6 @@ public class ScenarioController : MonoBehaviour
             // Convert the results to JSON
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(_results);
             Debug.Log(json);
-            // Copy to clipboard
-            GUIUtility.systemCopyBuffer = json;
             return;
         }
 

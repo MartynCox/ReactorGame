@@ -726,6 +726,7 @@ GameObject:
   - component: {fileID: 618763495}
   - component: {fileID: 618763494}
   - component: {fileID: 618763493}
+  - component: {fileID: 618763496}
   m_Layer: 5
   m_Name: SkipButton
   m_TagString: Untagged
@@ -872,6 +873,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 618763491}
   m_CullTransparentMesh: 1
+--- !u!114 &618763496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 618763491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ab0a5da056f343429e81b573a356e5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pointerTexture: {fileID: 2800000, guid: 4c77372cc3eb6b447b6a47bfd68e42ff, type: 3}
 --- !u!1 &649316309
 GameObject:
   m_ObjectHideFlags: 0
@@ -1231,6 +1245,7 @@ GameObject:
   - component: {fileID: 996116573}
   - component: {fileID: 996116572}
   - component: {fileID: 996116571}
+  - component: {fileID: 996116574}
   m_Layer: 5
   m_Name: BeginButton
   m_TagString: Untagged
@@ -1353,6 +1368,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 996116569}
   m_CullTransparentMesh: 1
+--- !u!114 &996116574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 996116569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ab0a5da056f343429e81b573a356e5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pointerTexture: {fileID: 2800000, guid: 4c77372cc3eb6b447b6a47bfd68e42ff, type: 3}
 --- !u!1 &1137711969
 GameObject:
   m_ObjectHideFlags: 0
@@ -1365,6 +1393,7 @@ GameObject:
   - component: {fileID: 1137711973}
   - component: {fileID: 1137711972}
   - component: {fileID: 1137711971}
+  - component: {fileID: 1137711974}
   m_Layer: 5
   m_Name: WatchButton
   m_TagString: Untagged
@@ -1499,6 +1528,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1137711969}
   m_CullTransparentMesh: 1
+--- !u!114 &1137711974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1137711969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ab0a5da056f343429e81b573a356e5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pointerTexture: {fileID: 2800000, guid: 4c77372cc3eb6b447b6a47bfd68e42ff, type: 3}
 --- !u!1 &1367242423
 GameObject:
   m_ObjectHideFlags: 0
@@ -1622,14 +1664,14 @@ VideoPlayer:
   m_TargetMaterialProperty: <noninit>
   m_RenderMode: 1
   m_AspectRatio: 2
-  m_DataSource: 0
+  m_DataSource: 1
   m_PlaybackSpeed: 1
   m_AudioOutputMode: 2
   m_TargetAudioSources:
   - {fileID: 0}
   m_DirectAudioVolumes:
   - 1
-  m_Url: 
+  m_Url: https://reactorgame.azurewebsites.net/video/Intro.mp4
   m_EnabledAudioTracks: 01
   m_DirectAudioMutes: 01
   m_ControlledAudioTrackCount: 1

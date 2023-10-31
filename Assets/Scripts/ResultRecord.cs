@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine.Scripting;
 
 namespace Assets.Scripts
 {
+    [Preserve]
     public class ResultRecord
     {
         private List<int> _valveFlows;

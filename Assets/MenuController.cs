@@ -4,15 +4,15 @@ using UnityEngine;
 using TMPro;
 using Assets.Scripts.Settings;
 using System;
+using UnityEngine.Video;
 
 public class MenuController : MonoBehaviour
 {
-    [SerializeField]
-    private TMPro.TMP_Text _promptText;
-    [SerializeField]
-    private TMPro.TMP_Text _completionText;
-    [SerializeField]
-    private UnityEngine.UI.Button _nextButton;
+    [SerializeField] private TMP_Text _promptText;
+    [SerializeField] private TMP_Text _completionText;
+    [SerializeField] private UnityEngine.UI.Button _nextButton;
+    [SerializeField] private Transform _video;
+    [SerializeField] private Transform _hidenWhenVideo;
 
     private void Start()
     {
@@ -20,6 +20,25 @@ public class MenuController : MonoBehaviour
         {
             SetScenario();
         }
+
+        if (!ScenarioController.Instance.HasSettings()
+            || ScenarioController.Instance.GetScenarioIndex() == 0)
+        {
+            // Show the video
+            _video.gameObject.SetActive(true);
+            VideoPlayer videoPlayer = _video.GetComponentInChildren<VideoPlayer>();
+            videoPlayer.loopPointReached += EndVideoReached;
+            _hidenWhenVideo.gameObject.SetActive(false);
+        }
+    }
+
+    private void EndVideoReached(VideoPlayer vp)
+    {
+        Debug.Log("stop video");
+        // Stop the video
+        vp.Stop();
+        _video.gameObject.SetActive(false);
+        _hidenWhenVideo.gameObject.SetActive(true);
     }
 
     public void SetScenario()
@@ -33,7 +52,7 @@ public class MenuController : MonoBehaviour
             _promptText.text = "Next scenario is " + (index + 1) + " of " + total;
         } else
         {
-            _completionText.text = "This Scenario " + (index + 1) + " of " + total;
+            _completionText.text = "This Scenario is " + (index + 1) + " of " + total;
             _promptText.text = "Press the button to start the scenario";
         }
     }

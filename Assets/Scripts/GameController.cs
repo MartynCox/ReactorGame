@@ -68,7 +68,7 @@ public class GameController : MonoBehaviour
         c.a += Time.deltaTime / _fadeOutTime;
         _overlay.color = c;
     }
-
+    
     public void Advance()
     {
         if (_isPaused) { return; }

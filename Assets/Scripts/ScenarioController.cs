@@ -103,7 +103,6 @@ public class ScenarioController : MonoBehaviour
                 break;
             case UnityWebRequest.Result.Success:
                 newSettings = ScenarioSet.LoadSettings(webRequest.downloadHandler.text);
-                Debug.Log("Scenario: " + newSettings.Scenarios[0].ScenarioName);
                 break;
         }
 

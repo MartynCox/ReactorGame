@@ -897,7 +897,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ab0a5da056f343429e81b573a356e5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pointerTexture: {fileID: 2800000, guid: a6fda7570fec58946aa6030e80acb4e6, type: 3}
+  _pointerTexture: {fileID: 2800000, guid: 4c77372cc3eb6b447b6a47bfd68e42ff, type: 3}
+  _defaultTexture: {fileID: 0}
 --- !u!1 &649316309
 GameObject:
   m_ObjectHideFlags: 0
@@ -1395,6 +1396,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pointerTexture: {fileID: 2800000, guid: 4c77372cc3eb6b447b6a47bfd68e42ff, type: 3}
+  _defaultTexture: {fileID: 0}
 --- !u!1 &1137711969
 GameObject:
   m_ObjectHideFlags: 0
@@ -1555,6 +1557,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pointerTexture: {fileID: 2800000, guid: 4c77372cc3eb6b447b6a47bfd68e42ff, type: 3}
+  _defaultTexture: {fileID: 0}
 --- !u!1 &1367242423
 GameObject:
   m_ObjectHideFlags: 0

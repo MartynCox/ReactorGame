@@ -28,6 +28,7 @@ public class FlowValve : Valve, IPointerEnterHandler, IPointerExitHandler
     private bool _isDragging = false;
     [SerializeField] private float _dragSensitivity = 1.2f;
     [SerializeField] private Texture2D _dragPointer;
+    [SerializeField] private Texture2D _defaultPointer;
 
     [SerializeField] private Sprite _tickSprite;
     [SerializeField] protected Color TickColour;
@@ -166,7 +167,7 @@ public class FlowValve : Valve, IPointerEnterHandler, IPointerExitHandler
     public void EndDrag()
     {
         _isDragging = false;
-        Cursor.SetCursor(null, new Vector2(0f, 0f), CursorMode.Auto);
+        Cursor.SetCursor(_defaultPointer, new Vector2(12f, 0f), CursorMode.Auto);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -183,7 +184,7 @@ public class FlowValve : Valve, IPointerEnterHandler, IPointerExitHandler
     public void OnPointerExit(PointerEventData eventData)
     {
         if (!_isDragging){
-            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+            Cursor.SetCursor(_defaultPointer, new Vector2(12f, 0f), CursorMode.Auto);
         }
         // Reset the handle color
         _handle.GetComponent<UnityEngine.UI.Image>().color = _colours[(int) GetState()];

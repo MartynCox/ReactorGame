@@ -262,6 +262,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pointerTexture: {fileID: 2800000, guid: 4c77372cc3eb6b447b6a47bfd68e42ff, type: 3}
+  _defaultTexture: {fileID: 2800000, guid: 59f91a8c37db76242ba7767cd0ec6097, type: 3}
 --- !u!1 &1263438887734215079
 GameObject:
   m_ObjectHideFlags: 0
@@ -631,11 +632,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _state: 1
-  FlowRate: 0
   _connectedPipes:
   - {fileID: 0}
   _inflowTank: {fileID: 0}
   _outflowTank: {fileID: 0}
+  _flowRateThrottle: 1
+  _name: 
   _colours:
   - {r: 0.4117647, g: 0.8, b: 0.11372549, a: 1}
   - {r: 0.85882354, g: 0.15294118, b: 0.07450981, a: 1}
@@ -649,6 +651,7 @@ MonoBehaviour:
   _flowInc: 1
   _dragSensitivity: 1.2
   _dragPointer: {fileID: 2800000, guid: 12ae7bc30d1273847be5665ad3c5c62b, type: 3}
+  _defaultPointer: {fileID: 2800000, guid: 59f91a8c37db76242ba7767cd0ec6097, type: 3}
   _tickSprite: {fileID: 21300000, guid: 87fc2f069a4ad5a4e8134ef89daee991, type: 3}
   TickColour: {r: 0.07058824, g: 0.039215688, b: 0.011764706, a: 1}
   leftArrow: {fileID: 1263438887734215077}

@@ -1,12 +1,9 @@
 using Assets.Scripts.Settings;
 using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.Scripting;
-using Newtonsoft;
-using static System.Net.WebRequestMethods;
+using UnityEngine.SceneManagement;
 
 [Preserve]
 public class ScenarioController : MonoBehaviour
@@ -14,6 +11,7 @@ public class ScenarioController : MonoBehaviour
     [SerializeField] private string _settingsUrl = "https://reactorgame.azurewebsites.net/Settings?handler=json";
     [SerializeField] private string[] _videoUrls;
     [SerializeField] private float _sceneDelay = 3;
+    [SerializeField] private Texture2D _defaultPointer;
 
     public static ScenarioController Instance { get; private set; }
 
@@ -33,7 +31,7 @@ public class ScenarioController : MonoBehaviour
             return _settings.Scenarios[_currentScenarioIndex];
         }
     }
-    
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -45,8 +43,9 @@ public class ScenarioController : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
-        // Initialise results
+        // Initialise thnigs
         _results = new GameResults();
+        SceneManager.activeSceneChanged += ChangedScene;
 
         // Load the settings
         StartCoroutine(GetSettings());
@@ -115,7 +114,7 @@ public class ScenarioController : MonoBehaviour
         {
             FindAnyObjectByType<MenuController>().ReadyScenario(true);
         }
-        
+
         yield break;
     }
 
@@ -135,5 +134,16 @@ public class ScenarioController : MonoBehaviour
         // Get the video name as the last part of the URL
         _results.VideoShown = url.Substring(url.LastIndexOf('/') + 1);
         return url;
+    }
+
+    private void ChangedScene(Scene current, Scene next)
+    {
+        ResetCursor();
+    }
+
+    public void ResetCursor()
+    {
+        // Set cursor to default
+        Cursor.SetCursor(_defaultPointer, new Vector2(12f, 0f), CursorMode.Auto);
     }
 }

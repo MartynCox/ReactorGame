@@ -12,6 +12,7 @@ public class Reactor : Tank
     [SerializeField] private GameObject _targetMarker;
     [SerializeField] private float _currentTemperature;
     [SerializeField] private Color[] _colours;
+    [SerializeField] private ReactorGraph _graph;
     private float _targetTemperature = 120f;
 
     void Start()
@@ -19,10 +20,12 @@ public class Reactor : Tank
         // Set up the slider
         float minTemp = 0;
         float maxTemp = 300;
+        int totalCycles = 10;
         if (ScenarioController.Instance.HasSettings())
         {
             maxTemp = ScenarioController.Instance.Settings.FlowTemperatures[GetMinFlowRate()];
             _targetTemperature = ScenarioController.Instance.Settings.TargetTemperature;
+            totalCycles = ScenarioController.Instance.Settings.TotalCycles;
         }
         
         _temperatureSlider.minValue = minTemp;
@@ -38,6 +41,9 @@ public class Reactor : Tank
             sliderHeight * (_targetTemperature - minTemp) / (maxTemp - minTemp),
             markerTransform.localPosition.z
         );
+
+        // Set up the graph
+        _graph.SetTemps(_targetTemperature, minTemp, maxTemp, totalCycles);
 
         // Update the state
         UpdateState();
@@ -153,6 +159,7 @@ public class Reactor : Tank
     public float RecordTemperature()
     {
         UpdateState();
+        _graph.AddMarker(_currentTemperature);
         return _currentTemperature;
     }
 }

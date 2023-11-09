@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class GameController : MonoBehaviour
 {
     [SerializeField] private Transform _advanceBar;
+    [SerializeField] private TMP_Text _cycleProgressionText;
     [SerializeField] private float _stepTime = 15f;
     [SerializeField] private TMP_Text _stepText;
     [SerializeField] private Image _overlay;
@@ -38,6 +39,8 @@ public class GameController : MonoBehaviour
         _resultOutput = new ResultOutput();
         _isPaused = false;
         _isFinished = false;
+        _cycleProgressionText.text = "Cycle " + (_currentStep + 1)
+           + " of " + _totalSteps.ToString();
     }
 
     private void Update()
@@ -76,13 +79,14 @@ public class GameController : MonoBehaviour
         _currentStep++;
         _timeUntilAdvance = _stepTime;
 
-        // Find and record water flow to reactor
+        // Before updating the components, record the results
         Reactor reactor = FindObjectOfType<Reactor>();
         if (reactor != null)
         {
-            reactor.RecordValue();
+            float temperature = reactor.RecordTemperature();
+            RecordResults(temperature);
         }
-        
+
         // Update all valves
         foreach (Valve v in _allValves)
         {
@@ -101,23 +105,25 @@ public class GameController : MonoBehaviour
             reactor.UpdateState();
         }
 
-        // After all components have been updated, record the results
-        RecordResults(reactor);
-
         // Check if we're done
         if (_currentStep >= _totalSteps)
         {
             _isPaused = true;
             _isFinished = true;
             ScenarioController.Instance.EndScenario(_resultOutput.ToCSV());
+            return;
         }
+
+        // Update the cycle progression text
+        _cycleProgressionText.text = "Cycle " + (_currentStep + 1)
+            + " of " + _totalSteps.ToString();
     }
 
-    private void RecordResults(Reactor reactor)
+    private void RecordResults(float reactorTemp)
     {
         ResultRecord record = new ResultRecord();
 
-        record.SetTemperature(reactor.GetTemperature());
+        record.SetTemperature(reactorTemp);
         record.SetTime(_currentStep);
 
         List<int> flows = new List<int>();

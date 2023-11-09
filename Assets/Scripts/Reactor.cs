@@ -150,13 +150,9 @@ public class Reactor : Tank
         return maxFlow;
     }
 
-    public void RecordValue()
+    public float RecordTemperature()
     {
         UpdateState();
-    }
-
-    public float GetTemperature()
-    {
         return _currentTemperature;
     }
 }

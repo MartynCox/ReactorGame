@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class ReactorGraph : MonoBehaviour
 {
     [SerializeField] private GameObject _graphMarker;
+    [SerializeField] private GameObject _graphVertical;
+    [SerializeField] private GameObject _graphHorizontal;
     [SerializeField] private Color[] _colours;
     private float _targetTemperature = 120f;
     private float _minTemperature = 0f;
@@ -22,10 +24,13 @@ public class ReactorGraph : MonoBehaviour
 
     private void UpdateDisplay()
     {
-        // Destroy all children
+        // Destroy all children that are markers
         foreach (Transform child in transform)
         {
-            Destroy(child.gameObject);
+            if (child.gameObject.name.Equals(_graphMarker.name))
+            {
+                Destroy(child.gameObject);
+            }
         }
 
         // Add a marker for each temperature
@@ -52,5 +57,28 @@ public class ReactorGraph : MonoBehaviour
         _minTemperature = minTemp;
         _maxTemperature = maxTemp;
         _totalCycles = totalCycles;
+
+        // Create vertical lines
+        float spacing_x = GetComponent<RectTransform>().rect.width / (_totalCycles - 1);
+        for (int i = 0; i < _totalCycles; i++)
+        {
+            GameObject vertical = Instantiate(_graphVertical, transform);
+            RectTransform verticalTransform = vertical.GetComponent<RectTransform>();
+            verticalTransform.localPosition = new Vector3(
+                spacing_x * i,
+                verticalTransform.localPosition.y,
+                verticalTransform.localPosition.z
+            );
+        }
+
+        // Create horizontal for target temperature
+        float height = GetComponent<RectTransform>().rect.height;
+        GameObject horizontal = Instantiate(_graphHorizontal, transform);
+        RectTransform horizontalTransform = horizontal.GetComponent<RectTransform>();
+        horizontalTransform.localPosition = new Vector3(
+            horizontalTransform.localPosition.x,
+            height * (_targetTemperature - _minTemperature) / (_maxTemperature - _minTemperature),
+            horizontalTransform.localPosition.z
+        );
     }
 }

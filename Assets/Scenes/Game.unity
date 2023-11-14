@@ -446,6 +446,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1187673755}
     m_Modifications:
+    - target: {fileID: 2947900662287872440, guid: 896d47181a1bea341a6e7ec291a231db, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5757081413295140310, guid: 896d47181a1bea341a6e7ec291a231db, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0.24
@@ -1054,7 +1058,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.254717, g: 0.23600037, b: 0.1766198, a: 1}
+  m_Color: {r: 0.24313727, g: 0.227451, b: 0.16862746, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5929,7 +5933,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.88052344, b: 0.28773582, a: 1}
+  m_Color: {r: 0.254717, g: 0.23529412, b: 0.1764706, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5966,6 +5970,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 079ed8627cc463641869942a4fb5f568, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _warningSign: {fileID: 0}
   _name: Reactor
   _maxCapacity: 1000
   _capacity: 0

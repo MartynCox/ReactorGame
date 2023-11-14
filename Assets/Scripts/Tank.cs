@@ -6,6 +6,8 @@ using UnityEngine;
 public class Tank : MonoBehaviour
 {
     private RectTransform _water;
+    [SerializeField] private GameObject _warningSign;
+    private bool _isOverflowed = false;
     [SerializeField] private string _name;
     [SerializeField] private float _maxCapacity = 8;
     [SerializeField] private float _capacity = 0;
@@ -37,6 +39,8 @@ public class Tank : MonoBehaviour
         {
             CreateLineMarkings();
         }
+
+        _warningSign.SetActive(false);
     }
 
     private void CreateLineMarkings()
@@ -77,9 +81,12 @@ public class Tank : MonoBehaviour
             foreach (Valve valve in _inputValves)
             {
                 valve.Break();
+                _isOverflowed = true;
             }
                 
         }
+
+        UpdateWarningSign();
 
         // Return how much water was added
         return _capacity - lastCapacity;
@@ -148,25 +155,45 @@ public class Tank : MonoBehaviour
             }
         }
 
-        if (isFilling && isDraining)
-        {
-            Debug.LogError("Tank " + this.name + " is both filling and draining");
-        }
-
         // Update the valves
         if (isFilling)
         {
             DisableValves(true);
             EnableValves(true);
-        } else if (isDraining)
+        }
+        else if (isDraining)
         {
             DisableValves(false);
             EnableValves(false);
-        } else
+        }
+        else
         {
             EnableValves(true);
             EnableValves(false);
-        }   
+        }
+
+        UpdateWarningSign();
+    }
+
+    private void UpdateWarningSign()
+    {
+        // Check whether the tank is about to overflow
+        _warningSign.SetActive(false);
+        if (_isOverflowed) { return; }
+        
+        float flowAmount = 0;
+        foreach (Valve valve in _inputValves)
+        {
+            if (valve.IsOpen && valve.IsWaterAvailable())
+            {
+                flowAmount += valve.GetFlowRate();
+            }
+        }
+
+        if (_capacity + flowAmount > _maxCapacity)
+        {
+            _warningSign.SetActive(true);
+        }
     }
         
     public void DisableValves(bool isFilling)

@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using System.ComponentModel.Design;
-using Assets.Scripts;
 using UnityEngine.UI;
+using Assets.Scripts.Settings;
 
 public class GameController : MonoBehaviour
 {
@@ -21,7 +20,7 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private List<Valve> _allValves;
 
-    private ResultOutput _resultOutput;
+    private ScenarioResult _resultOutput;
 
     private bool _isPaused = false;
     private bool _isFinished = false;
@@ -36,7 +35,7 @@ public class GameController : MonoBehaviour
 
         _timeUntilAdvance = _stepTime;
         _currentStep = 0;
-        _resultOutput = new ResultOutput();
+        _resultOutput = new ScenarioResult();
         _isPaused = false;
         _isFinished = false;
         _cycleProgressionText.text = "Cycle " + (_currentStep + 1)
@@ -110,7 +109,7 @@ public class GameController : MonoBehaviour
         {
             _isPaused = true;
             _isFinished = true;
-            ScenarioController.Instance.EndScenario(_resultOutput.ToCSV());
+            ScenarioController.Instance.EndScenario(_resultOutput);
             return;
         }
 
@@ -121,18 +120,13 @@ public class GameController : MonoBehaviour
 
     private void RecordResults(float reactorTemp)
     {
-        ResultRecord record = new ResultRecord();
-
-        record.SetTemperature(reactorTemp);
-        record.SetTime(_currentStep);
-
         List<int> flows = new List<int>();
         foreach (Valve v in _allValves)
         {
             flows.Add(v.GetFlowRate());
         }
 
-        record.SetFlows(flows);
+        CycleResult record = new CycleResult(flows, reactorTemp, _currentStep);
         _resultOutput.AddRecord(record);
     }
 }

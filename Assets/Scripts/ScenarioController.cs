@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 public class ScenarioController : MonoBehaviour
 {
     [SerializeField] private string _settingsUrl = "https://reactorgame.azurewebsites.net/Settings?handler=json";
+    [SerializeField] private string _resultsUrl = "https://reactorgame.azurewebsites.net/Results";
     [SerializeField] private string[] _videoUrls;
     [SerializeField] private float _sceneDelay = 3;
     [SerializeField] private Texture2D _defaultPointer;
@@ -16,7 +17,7 @@ public class ScenarioController : MonoBehaviour
     public static ScenarioController Instance { get; private set; }
 
     private ScenarioSet _settings;
-    private GameResults _results;
+    private GameResult _results;
 
     private int _currentScenarioIndex = 0;
 
@@ -43,8 +44,8 @@ public class ScenarioController : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
-        // Initialise thnigs
-        _results = new GameResults();
+        // Initialise things
+        _results = new GameResult();
         SceneManager.activeSceneChanged += ChangedScene;
 
         // Load the settings
@@ -53,7 +54,7 @@ public class ScenarioController : MonoBehaviour
         FindAnyObjectByType<MenuController>().ReadyScenario(false);
     }
 
-    public void EndScenario(string result)
+    public void EndScenario(ScenarioResult result)
     {
         // Add the result to the list
         _results.ResultList.Add(result);
@@ -68,6 +69,7 @@ public class ScenarioController : MonoBehaviour
             // Convert the results to JSON
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(_results);
             Debug.Log(json);
+            StartCoroutine(SendResult(json));
             return;
         }
 
@@ -78,7 +80,7 @@ public class ScenarioController : MonoBehaviour
     private IEnumerator LoadSceneWithDelay(string scene, float delaySeconds)
     {
         yield return new WaitForSeconds(delaySeconds);
-        UnityEngine.SceneManagement.SceneManager.LoadScene(scene);
+        SceneManager.LoadScene(scene);
     }
 
     public bool HasSettings()
@@ -110,12 +112,37 @@ public class ScenarioController : MonoBehaviour
         _results.StartTimestamp = System.DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
 
         // Ready the button if we're in the menu
-        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Menu")
+        if (SceneManager.GetActiveScene().name == "Menu")
         {
             FindAnyObjectByType<MenuController>().ReadyScenario(true);
         }
 
         yield break;
+    }
+
+    private IEnumerator SendResult(string json)
+    {
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
+
+        using UnityWebRequest webRequest = new UnityWebRequest(_resultsUrl, UnityWebRequest.kHttpVerbPOST);
+        webRequest.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+
+        yield return webRequest.SendWebRequest();
+
+        switch (webRequest.result)
+        {
+            case UnityWebRequest.Result.ConnectionError:
+            case UnityWebRequest.Result.DataProcessingError:
+            case UnityWebRequest.Result.ProtocolError:
+                Debug.LogError(webRequest.error);
+                break;
+            case UnityWebRequest.Result.Success:
+                Debug.Log("Results sent successfully");
+                break;
+        }
     }
 
     public int GetScenarioIndex()

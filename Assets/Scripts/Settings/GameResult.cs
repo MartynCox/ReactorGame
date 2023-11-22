@@ -1,13 +1,11 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using UnityEngine.Scripting;
 
 namespace Assets.Scripts.Settings
 {
     [Serializable]
-    [Preserve]
-    public class GameResults
+    public class GameResult
     {
         [JsonProperty("gameName")]
         public string GameName { get; set; }
@@ -22,14 +20,18 @@ namespace Assets.Scripts.Settings
         public string EndTimestamp { get; set; }
 
         [JsonProperty("results")]
-        public List<string> ResultList { get; set; }
+        public List<ScenarioResult> ResultList { get; set; }
 
-        public GameResults()
+        [JsonProperty("csvHeaders")]
+        public string CsvHeaders { get; set; }
+
+        public GameResult()
         {
             GameName = "Default";
+            CsvHeaders = CycleResult.GetHeader();
             StartTimestamp = DateTime.MinValue.ToString("yyyy-MM-ddTHH:mm:ss");
             EndTimestamp = DateTime.MinValue.ToString("yyyy-MM-ddTHH:mm:ss");
-            ResultList = new List<string>();
+            ResultList = new List<ScenarioResult>();
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq;
 
 public class Reactor : Tank
 {
@@ -23,7 +24,9 @@ public class Reactor : Tank
         int totalCycles = 10;
         if (ScenarioController.Instance.HasSettings())
         {
-            maxTemp = ScenarioController.Instance.Settings.FlowTemperatures[GetMinFlowRate()];
+            var sortedFlows = ScenarioController.Instance.Settings.FlowTemperatures.Keys.OrderBy(k => k).ToList();
+            int minFlow = sortedFlows[0];
+            maxTemp = ScenarioController.Instance.Settings.FlowTemperatures[minFlow];
             _targetTemperature = ScenarioController.Instance.Settings.TargetTemperature;
             totalCycles = ScenarioController.Instance.Settings.TotalCycles;
         }
@@ -106,29 +109,40 @@ public class Reactor : Tank
     {
         if (!ScenarioController.Instance.HasSettings()) { return 0; }
 
-        int upperFlow = Mathf.CeilToInt(flow);
-        int lowerFlow = Mathf.FloorToInt(flow);
-
         Dictionary<int, int> flowTemperatures = ScenarioController.Instance.Settings.FlowTemperatures;
 
-        // Find max and min flow rates
-        int maxFlow = GetMaxFlowRate();
-        int minFlow = GetMinFlowRate();
+        // Sort the keys to and then find the two temperatures that the flow rate is between
+        var sortedKeys = flowTemperatures.Keys.OrderBy(k => k).ToList();
 
-        // Clamp the flow rate to the max and min
-        upperFlow = Mathf.Clamp(upperFlow, minFlow, maxFlow);
-        lowerFlow = Mathf.Clamp(lowerFlow, minFlow, maxFlow);
+        int lowerFlow = sortedKeys[0];
+        int upperFlow = sortedKeys[sortedKeys.Count - 1];
 
-        int upperTemp = ScenarioController.Instance.Settings.FlowTemperatures[upperFlow];
-        int lowerTemp = ScenarioController.Instance.Settings.FlowTemperatures[lowerFlow];
+        for (int i = 0; i < sortedKeys.Count; i++)
+        {
+            if (sortedKeys[i] <= flow)
+            {
+                lowerFlow = sortedKeys[i];
+            }
+            if (sortedKeys[i] >= flow && i > 0)
+            {
+                upperFlow = sortedKeys[i];
+                break;
+            }
+        }
 
         // If the flow rate is exactly one of the temperatures, return that temperature
-        if (upperFlow == lowerFlow) { return upperTemp; }
+        if (upperFlow == lowerFlow)
+        {
+            return flowTemperatures[lowerFlow];
+        }
 
-        // Otherwise interpolate between the two temperatures
-        float t = (flow - lowerFlow) / (upperFlow - lowerFlow);
+        // Otherwise, interpolate between the two temperatures
+        int upperTemp = flowTemperatures[upperFlow];
+        int lowerTemp = flowTemperatures[lowerFlow];
+        float t = (flow - lowerFlow) / (float)(upperFlow - lowerFlow);
         return Mathf.Lerp(lowerTemp, upperTemp, t);
     }
+
 
     private int GetMinFlowRate()
     {
@@ -141,19 +155,6 @@ public class Reactor : Tank
             if (flowRate < minFlow) { minFlow = flowRate; }
         }
         return minFlow;
-    }
-
-    private int GetMaxFlowRate()
-    {
-        if (!ScenarioController.Instance.HasSettings()) { return 0; }
-
-        int maxFlow = 0;
-        Dictionary<int, int> flowTemperatures = ScenarioController.Instance.Settings.FlowTemperatures;
-        foreach (int flowRate in flowTemperatures.Keys)
-        {
-            if (flowRate > maxFlow) { maxFlow = flowRate; }
-        }
-        return maxFlow;
     }
 
     public float RecordTemperature()

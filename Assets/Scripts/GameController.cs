@@ -36,6 +36,7 @@ public class GameController : MonoBehaviour
         _timeUntilAdvance = _stepTime;
         _currentStep = 0;
         _resultOutput = new ScenarioResult();
+        _resultOutput.ScenarioName = ScenarioController.Instance.Settings.ScenarioName;
         _isPaused = false;
         _isFinished = false;
         _cycleProgressionText.text = "Cycle " + (_currentStep + 1)

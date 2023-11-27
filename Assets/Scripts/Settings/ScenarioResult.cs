@@ -15,14 +15,20 @@ namespace Assets.Scripts.Settings
         [JsonProperty("records")]
         public List<CycleResult> Records;
 
+        [JsonProperty("scenarioName")]
+        public string ScenarioName;
+
         public ScenarioResult()
         {
             Records = new List<CycleResult>();
+            ScenarioName = "Default";
+
         }
 
-        public ScenarioResult(List<CycleResult> records)
+        public ScenarioResult(List<CycleResult> records, string name)
         {
             Records = records;
+            ScenarioName = name;
         }
 
         public void AddRecord(CycleResult record)

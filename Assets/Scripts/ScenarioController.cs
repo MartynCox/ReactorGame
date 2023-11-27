@@ -25,7 +25,7 @@ public class ScenarioController : MonoBehaviour
     {
         get
         {
-            if (_settings == null)
+            if (_settings == null || _currentScenarioIndex >= _settings.Scenarios.Count)
             {
                 return null;
             }

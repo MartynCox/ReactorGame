@@ -1,10 +1,12 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using UnityEngine.Scripting;
 
 namespace Assets.Scripts.Settings
 {
     [Serializable]
+    [Preserve]
     public class GameResult
     {
         [JsonProperty("gameName")]

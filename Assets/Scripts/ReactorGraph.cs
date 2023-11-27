@@ -38,7 +38,6 @@ public class ReactorGraph : MonoBehaviour
         float height = GetComponent<RectTransform>().rect.height;
         for (int i = 0; i < _temperatures.Count; i++)
         {
-            Console.WriteLine("Adding marker");
             GameObject marker = Instantiate(_graphMarker, transform);
             RectTransform markerTransform = marker.GetComponent<RectTransform>();
             markerTransform.localPosition = new Vector3(

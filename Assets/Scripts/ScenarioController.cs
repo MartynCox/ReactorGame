@@ -68,7 +68,6 @@ public class ScenarioController : MonoBehaviour
             _results.EndTimestamp = System.DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
             // Convert the results to JSON
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(_results);
-            Debug.Log(json);
             StartCoroutine(SendResult(json));
             return;
         }

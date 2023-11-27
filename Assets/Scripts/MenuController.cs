@@ -35,7 +35,6 @@ public class MenuController : MonoBehaviour
 
     private void EndVideoReached(VideoPlayer vp)
     {
-        Debug.Log("stop video");
         // Stop the video
         vp.Stop();
         _video.gameObject.SetActive(false);

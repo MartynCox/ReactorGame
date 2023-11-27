@@ -6,6 +6,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 using Unity.VisualScripting;
+using Assets.Scripts.Settings;
+
 
 public class FlowValve : Valve, IPointerEnterHandler, IPointerExitHandler
 {

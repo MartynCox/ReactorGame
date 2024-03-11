@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using Assets.Scripts.Settings;
+using Unity.Collections;
 
 public class GameController : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private Image _overlay;
     [SerializeField] private float _fadeOutTime = 3f;
     private float _timeUntilAdvance;
+    private float _lastStepTimestamp;
     private int _currentStep = 0;
     private int _totalSteps = 0;
 
@@ -34,6 +36,7 @@ public class GameController : MonoBehaviour
         }
 
         _timeUntilAdvance = _stepTime;
+        _lastStepTimestamp = Time.realtimeSinceStartup;
         _currentStep = 0;
         _resultOutput = new ScenarioResult();
         _resultOutput.ScenarioName = ScenarioController.Instance.Settings.ScenarioName;
@@ -77,7 +80,6 @@ public class GameController : MonoBehaviour
         if (_isPaused) { return; }
 
         _currentStep++;
-        _timeUntilAdvance = _stepTime;
 
         // Before updating the components, record the results
         Reactor reactor = FindObjectOfType<Reactor>();
@@ -86,6 +88,9 @@ public class GameController : MonoBehaviour
             float temperature = reactor.RecordTemperature();
             RecordResults(temperature);
         }
+
+        _lastStepTimestamp = Time.realtimeSinceStartup;
+        _timeUntilAdvance = _stepTime;
 
         // Update all valves
         foreach (Valve v in _allValves)
@@ -127,7 +132,9 @@ public class GameController : MonoBehaviour
             flows.Add(v.GetFlowRate());
         }
 
-        CycleResult record = new CycleResult(flows, reactorTemp, _currentStep);
+        float realTime = Time.realtimeSinceStartup - _lastStepTimestamp;
+        float inGameTime = _stepTime - _timeUntilAdvance;
+        CycleResult record = new CycleResult(flows, reactorTemp, _currentStep, inGameTime, realTime);
         _resultOutput.AddRecord(record);
     }
 }

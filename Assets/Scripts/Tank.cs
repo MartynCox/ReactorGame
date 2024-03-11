@@ -179,8 +179,13 @@ public class Tank : MonoBehaviour
     {
         // Check whether the tank is about to overflow
         _warningSign.SetActive(false);
+
+        // Don't show the warning if it's disabled or already overflowed
+        if (! ScenarioController.Instance.Settings.ShowOverflowWarning) { return; }
+
         if (_isOverflowed) { return; }
         
+        // Check if the tank is about to overflow
         float flowAmount = 0;
         foreach (Valve valve in _inputValves)
         {

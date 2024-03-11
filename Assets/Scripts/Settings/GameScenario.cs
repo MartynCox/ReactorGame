@@ -14,18 +14,28 @@ namespace Assets.Scripts.Settings
     {
         [JsonProperty("scenarioName")]
         public string ScenarioName { get; set; }
+
         [JsonProperty("totalCycles")]
         public int TotalCycles { get; set; }
+
         [JsonProperty("cycleDuration")]
         public int CycleDuration { get; set; }
+
         [JsonProperty("breakTankOnOverflow")]
         public bool BreakTankOnOverflow { get; set; }
+
+        [JsonProperty("showOverflowWarning")]
+        public bool ShowOverflowWarning { get; set; }
+
         [JsonProperty("flowTemperatures")]
         public Dictionary<int, int> FlowTemperatures { get; set; }
+
         [JsonProperty("tanks")]
         public Dictionary<string, TankSettings> Tanks { get; set; }
+
         [JsonProperty("targetTemperature")]
         public int TargetTemperature { get; set; }
+
         [JsonProperty("valves")]
         public Dictionary<string, ValveSettings> Valves { get; set; }
 
@@ -39,7 +49,7 @@ namespace Assets.Scripts.Settings
         public void SaveSettings(String fname)
         {
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            System.IO.File.WriteAllText(fname, json);
+            File.WriteAllText(fname, json);
         }
     }
 
@@ -59,10 +69,13 @@ namespace Assets.Scripts.Settings
     {
         [JsonProperty("maxFlowDisplay")]
         public int MaxFlowDisplay { get; set; }
+
         [JsonProperty("flowStepSize")]
         public int FlowStepSize { get; set; }
+
         [JsonProperty("flowRatePerStep")]
         public float FlowRatePerStep { get; set; }
+
         [JsonProperty("isBroken")]
         public bool IsBroken { get; set; }
     }

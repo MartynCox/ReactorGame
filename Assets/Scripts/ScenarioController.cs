@@ -66,6 +66,7 @@ public class ScenarioController : MonoBehaviour
             // End the game
             StartCoroutine(LoadSceneWithDelay("End", _sceneDelay));
             _results.EndTimestamp = System.DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+            _results.CompletionCode = Random.Range(100000, 999999).ToString();
             // Convert the results to JSON
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(_results);
             StartCoroutine(SendResult(json));
@@ -152,6 +153,11 @@ public class ScenarioController : MonoBehaviour
     public int GetScenarioCount()
     {
         return _settings.Scenarios.Count;
+    }
+
+    public string GetCompletionCode()
+    {
+        return _results.CompletionCode;
     }
 
     public string GetRandomVideoUrl()

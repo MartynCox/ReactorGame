@@ -21,6 +21,9 @@ namespace Assets.Scripts.Settings
         [JsonProperty("endTimestamp")]
         public string EndTimestamp { get; set; }
 
+        [JsonProperty("completionCode")]
+        public string CompletionCode { get; set; }
+
         [JsonProperty("results")]
         public List<ScenarioResult> ResultList { get; set; }
 
@@ -33,6 +36,7 @@ namespace Assets.Scripts.Settings
             CsvHeaders = CycleResult.GetHeader();
             StartTimestamp = DateTime.MinValue.ToString("yyyy-MM-ddTHH:mm:ss");
             EndTimestamp = DateTime.MinValue.ToString("yyyy-MM-ddTHH:mm:ss");
+            CompletionCode = "100000";
             ResultList = new List<ScenarioResult>();
         }
     }

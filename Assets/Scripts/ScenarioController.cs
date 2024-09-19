@@ -10,7 +10,6 @@ public class ScenarioController : MonoBehaviour
 {
     [SerializeField] private string _settingsUrl = "https://reactorgame.azurewebsites.net/Settings?handler=json";
     [SerializeField] private string _resultsUrl = "https://reactorgame.azurewebsites.net/Results";
-    [SerializeField] private string[] _videoUrls;
     [SerializeField] private float _sceneDelay = 3;
     [SerializeField] private Texture2D _defaultPointer;
 
@@ -162,9 +161,12 @@ public class ScenarioController : MonoBehaviour
 
     public string GetRandomVideoUrl()
     {
-        string url = _videoUrls[Random.Range(0, _videoUrls.Length)];
-        // Get the video name as the last part of the URL
-        _results.VideoShown = url.Substring(url.LastIndexOf('/') + 1);
+        if (_settings == null)
+        {
+            return null;
+        }
+        // Get a random video URL
+        string url = _settings.VideoUrls[Random.Range(0, _settings.VideoUrls.Count)];
         return url;
     }
 

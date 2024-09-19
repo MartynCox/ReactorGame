@@ -16,9 +16,13 @@ namespace Assets.Scripts.Settings
         [JsonProperty("scenarios")]
         public List<GameScenario> Scenarios { get; set; }
 
+        [JsonProperty("videoUrls")]
+        public List<string> VideoUrls { get; set; }
+
         public ScenarioSet()
         {
             Scenarios = new List<GameScenario>();
+            VideoUrls = new List<string>();
             Name = "New Settings";
         }
 

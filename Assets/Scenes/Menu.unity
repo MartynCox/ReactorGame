@@ -942,8 +942,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _settingsUrl: https://reactorgame.azurewebsites.net/Settings?handler=json
   _resultsUrl: https://reactorgame.azurewebsites.net/Results
-  _videoUrls:
-  - https://reactorgame.azurewebsites.net/video/Intro.mp4
   _sceneDelay: 3
   _defaultPointer: {fileID: 0}
 --- !u!4 &649316311
@@ -993,6 +991,7 @@ MonoBehaviour:
   _promptText: {fileID: 394767745}
   _completionText: {fileID: 108203992}
   _nextButton: {fileID: 996116571}
+  _watchVideoButton: {fileID: 1137711971}
   _video: {fileID: 812557889}
   _hidenWhenVideo: {fileID: 1528259914}
 --- !u!4 &675309762

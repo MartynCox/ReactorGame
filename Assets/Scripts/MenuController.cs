@@ -11,6 +11,7 @@ public class MenuController : MonoBehaviour
     [SerializeField] private TMP_Text _promptText;
     [SerializeField] private TMP_Text _completionText;
     [SerializeField] private UnityEngine.UI.Button _nextButton;
+    [SerializeField] private UnityEngine.UI.Button _watchVideoButton;
     [SerializeField] private Transform _video;
     [SerializeField] private Transform _hidenWhenVideo;
 
@@ -25,12 +26,33 @@ public class MenuController : MonoBehaviour
             || ScenarioController.Instance.GetScenarioIndex() == 0)
         {
             // Show the video
-            _video.gameObject.SetActive(true);
-            VideoPlayer videoPlayer = _video.GetComponentInChildren<VideoPlayer>();
-            videoPlayer.url = ScenarioController.Instance.GetRandomVideoUrl();
-            videoPlayer.loopPointReached += EndVideoReached;
-            _hidenWhenVideo.gameObject.SetActive(false);
+            StartCoroutine(WaitForVideo());
         }
+    }
+
+    private IEnumerator WaitForVideo()
+    {
+        _video.gameObject.SetActive(true);
+        VideoPlayer videoPlayer = _video.GetComponentInChildren<VideoPlayer>();
+        string url = ScenarioController.Instance.GetRandomVideoUrl();
+
+        // Disable the video button
+        _watchVideoButton.interactable = false;
+        _watchVideoButton.GetComponentInChildren<TMP_Text>().text = "Loading...";
+
+        while(url == null)
+        {
+            yield return new WaitForSeconds(0.2f);
+            url = ScenarioController.Instance.GetRandomVideoUrl();
+        }
+
+        // Enable the video button
+        _watchVideoButton.interactable = true;
+        _watchVideoButton.GetComponentInChildren<TMP_Text>().text = "Play Video";
+
+        videoPlayer.url = url;
+        videoPlayer.loopPointReached += EndVideoReached;
+        _hidenWhenVideo.gameObject.SetActive(false);
     }
 
     private void EndVideoReached(VideoPlayer vp)

@@ -167,6 +167,7 @@ public class ScenarioController : MonoBehaviour
         }
         // Get a random video URL
         string url = _settings.VideoUrls[Random.Range(0, _settings.VideoUrls.Count)];
+        _results.VideoShown = url.Substring(url.LastIndexOf('/') + 1);
         return url;
     }
 

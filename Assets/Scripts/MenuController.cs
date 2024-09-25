@@ -12,6 +12,7 @@ public class MenuController : MonoBehaviour
     [SerializeField] private TMP_Text _completionText;
     [SerializeField] private UnityEngine.UI.Button _nextButton;
     [SerializeField] private UnityEngine.UI.Button _watchVideoButton;
+    [SerializeField] private UnityEngine.UI.Button _skipVideoButton;
     [SerializeField] private Transform _video;
     [SerializeField] private Transform _hidenWhenVideo;
 
@@ -35,6 +36,12 @@ public class MenuController : MonoBehaviour
         _video.gameObject.SetActive(true);
         VideoPlayer videoPlayer = _video.GetComponentInChildren<VideoPlayer>();
         string url = ScenarioController.Instance.GetRandomVideoUrl();
+
+        // Disable skip button if skipping is not allowed
+        if (!ScenarioController.Instance.GetAllowVideoSkipping())
+        {
+            _skipVideoButton.gameObject.SetActive(false);
+        }
 
         // Disable the video button
         _watchVideoButton.interactable = false;

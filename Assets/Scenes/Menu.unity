@@ -992,6 +992,7 @@ MonoBehaviour:
   _completionText: {fileID: 108203992}
   _nextButton: {fileID: 996116571}
   _watchVideoButton: {fileID: 1137711971}
+  _skipVideoButton: {fileID: 618763493}
   _video: {fileID: 812557889}
   _hidenWhenVideo: {fileID: 1528259914}
 --- !u!4 &675309762

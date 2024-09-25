@@ -19,6 +19,9 @@ namespace Assets.Scripts.Settings
         [JsonProperty("videoUrls")]
         public List<string> VideoUrls { get; set; }
 
+        [JsonProperty("allowVideoSkipping")]
+        public bool AllowVideoSkipping { get; set; }
+
         public ScenarioSet()
         {
             Scenarios = new List<GameScenario>();

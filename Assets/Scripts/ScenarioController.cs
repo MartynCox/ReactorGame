@@ -171,6 +171,15 @@ public class ScenarioController : MonoBehaviour
         return url;
     }
 
+    public bool GetAllowVideoSkipping()
+    {
+        if (_settings == null)
+        {
+            return false;
+        }
+        return _settings.AllowVideoSkipping;
+    }
+
     private void ChangedScene(Scene current, Scene next)
     {
         ResetCursor();

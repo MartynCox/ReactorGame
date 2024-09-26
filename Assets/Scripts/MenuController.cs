@@ -1,9 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
-using Assets.Scripts.Settings;
-using System;
+using UnityEngine;
 using UnityEngine.Video;
 
 public class MenuController : MonoBehaviour
@@ -34,8 +31,6 @@ public class MenuController : MonoBehaviour
     private IEnumerator WaitForVideo()
     {
         _video.gameObject.SetActive(true);
-        VideoPlayer videoPlayer = _video.GetComponentInChildren<VideoPlayer>();
-        string url = ScenarioController.Instance.GetRandomVideoUrl();
 
         // Disable skip button if skipping is not allowed
         if (!ScenarioController.Instance.GetAllowVideoSkipping())
@@ -47,11 +42,10 @@ public class MenuController : MonoBehaviour
         _watchVideoButton.interactable = false;
         _watchVideoButton.GetComponentInChildren<TMP_Text>().text = "Loading...";
 
-        while(url == null)
-        {
-            yield return new WaitForSeconds(0.2f);
-            url = ScenarioController.Instance.GetRandomVideoUrl();
-        }
+        yield return new WaitUntil(() => ScenarioController.Instance.HasSettings());
+
+        VideoPlayer videoPlayer = _video.GetComponentInChildren<VideoPlayer>();
+        string url = ScenarioController.Instance.GetRandomVideoUrl();
 
         // Enable the video button
         _watchVideoButton.interactable = true;

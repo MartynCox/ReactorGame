@@ -4,11 +4,13 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.Scripting;
 using UnityEngine.SceneManagement;
+using Newtonsoft.Json;
 
 [Preserve]
 public class ScenarioController : MonoBehaviour
 {
     [SerializeField] private string _settingsUrl = "https://reactorgame.azurewebsites.net/Settings?handler=json";
+    [SerializeField] private string _codesUrl = "https://reactorgame.azurewebsites.net/Codes?handler=getrandom";
     [SerializeField] private string _resultsUrl = "https://reactorgame.azurewebsites.net/Results";
     [SerializeField] private float _sceneDelay = 3;
     [SerializeField] private Texture2D _defaultPointer;
@@ -65,7 +67,9 @@ public class ScenarioController : MonoBehaviour
             // End the game
             StartCoroutine(LoadSceneWithDelay("End", _sceneDelay));
             _results.EndTimestamp = System.DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
-            _results.CompletionCode = Random.Range(100000, 999999).ToString();
+            // Get the completion code
+            StartCoroutine(RequestCompletionCode());
+            _results.CompletionCode = "";
             // Convert the results to JSON
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(_results);
             StartCoroutine(SendResult(json));
@@ -117,6 +121,32 @@ public class ScenarioController : MonoBehaviour
         }
 
         yield break;
+    }
+
+    private class CompletionCode
+    {
+        public string Code { get; set; }
+     }
+
+
+    private IEnumerator RequestCompletionCode()
+    {
+        using UnityWebRequest webRequest = UnityWebRequest.Get(_codesUrl);
+
+        yield return webRequest.SendWebRequest();
+
+        switch (webRequest.result)
+        {
+            case UnityWebRequest.Result.ConnectionError:
+            case UnityWebRequest.Result.DataProcessingError:
+            case UnityWebRequest.Result.ProtocolError:
+                Debug.LogError(webRequest.error);
+                break;
+            case UnityWebRequest.Result.Success:
+                string text = webRequest.downloadHandler.text;
+                _results.CompletionCode = JsonConvert.DeserializeObject<CompletionCode>(text).Code;
+                break;
+        }
     }
 
     private IEnumerator SendResult(string json)

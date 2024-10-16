@@ -7,9 +7,11 @@ public class MenuController : MonoBehaviour
 {
     [SerializeField] private TMP_Text _promptText;
     [SerializeField] private TMP_Text _completionText;
+    [SerializeField] private TMP_InputField _idInputField;
     [SerializeField] private UnityEngine.UI.Button _nextButton;
     [SerializeField] private UnityEngine.UI.Button _watchVideoButton;
     [SerializeField] private UnityEngine.UI.Button _skipVideoButton;
+    [SerializeField] private UnityEngine.UI.Button _submitWorkerIDButton;
     [SerializeField] private Transform _video;
     [SerializeField] private Transform _hidenWhenVideo;
 
@@ -19,6 +21,10 @@ public class MenuController : MonoBehaviour
         {
             SetScenario();
         }
+
+        // First get the mturk worker id
+        _video.gameObject.SetActive(false);
+        _submitWorkerIDButton.interactable = false;
 
         if (!ScenarioController.Instance.HasSettings()
             || ScenarioController.Instance.GetScenarioIndex() == 0)
@@ -30,8 +36,6 @@ public class MenuController : MonoBehaviour
 
     private IEnumerator WaitForVideo()
     {
-        _video.gameObject.SetActive(true);
-
         // Disable skip button if skipping is not allowed
         if (!ScenarioController.Instance.GetAllowVideoSkipping())
         {
@@ -93,5 +97,28 @@ public class MenuController : MonoBehaviour
     {
         // Go to the game scene
         UnityEngine.SceneManagement.SceneManager.LoadScene("Game");
+    }
+
+    public void VerifyWorkerID()
+    {
+        _submitWorkerIDButton.interactable = (_idInputField.text.Length > 10);
+    }
+
+    public void SetUserID()
+    {
+        if (ScenarioController.Instance.HasSettings())
+        {
+            ScenarioController.Instance.SetUserId(_idInputField.text.Trim());
+        }
+        else
+        {
+            StartCoroutine(AsyncSetUserID());
+        }
+    }
+
+    public IEnumerator AsyncSetUserID()
+    {
+        yield return new WaitUntil(() => ScenarioController.Instance.HasSettings());
+        ScenarioController.Instance.SetUserId(_idInputField.text.Trim());
     }
 }

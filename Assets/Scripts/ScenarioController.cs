@@ -64,20 +64,26 @@ public class ScenarioController : MonoBehaviour
         _currentScenarioIndex++;
         if (_currentScenarioIndex >= _settings.Scenarios.Count)
         {
-            // End the game
-            StartCoroutine(LoadSceneWithDelay("End", _sceneDelay));
-            _results.EndTimestamp = System.DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
-            // Get the completion code
-            StartCoroutine(RequestCompletionCode());
-            _results.CompletionCode = "";
-            // Convert the results to JSON
-            string json = Newtonsoft.Json.JsonConvert.SerializeObject(_results);
-            StartCoroutine(SendResult(json));
+            StartCoroutine(EndGame());
             return;
         }
 
         // Return to the menu
         StartCoroutine(LoadSceneWithDelay("Menu", _sceneDelay));
+    }
+
+    private IEnumerator EndGame()
+    {
+        // End the game
+        StartCoroutine(LoadSceneWithDelay("End", _sceneDelay));
+        _results.EndTimestamp = System.DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+        
+        // Get the completion code
+        yield return StartCoroutine(RequestCompletionCode());
+        
+        // Convert the results to JSON and send to the server
+        string json = JsonConvert.SerializeObject(_results);
+        yield return StartCoroutine(SendResult(json));
     }
 
     private IEnumerator LoadSceneWithDelay(string scene, float delaySeconds)
@@ -131,6 +137,7 @@ public class ScenarioController : MonoBehaviour
 
     private IEnumerator RequestCompletionCode()
     {
+        _results.CompletionCode = "";
         using UnityWebRequest webRequest = UnityWebRequest.Get(_codesUrl);
 
         yield return webRequest.SendWebRequest();
@@ -172,6 +179,11 @@ public class ScenarioController : MonoBehaviour
                 Debug.Log("Results sent successfully");
                 break;
         }
+    }
+
+    public void SetUserId(string userId)
+    {
+        _results.UserId = userId;
     }
 
     public int GetScenarioIndex()

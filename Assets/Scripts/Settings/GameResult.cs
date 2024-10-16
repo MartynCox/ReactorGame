@@ -9,6 +9,9 @@ namespace Assets.Scripts.Settings
     [Preserve]
     public class GameResult
     {
+        [JsonProperty("userId")]
+        public string UserId { get; set; }
+
         [JsonProperty("gameName")]
         public string GameName { get; set; }
 

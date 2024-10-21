@@ -12,6 +12,9 @@ namespace Assets.Scripts.Settings
         [JsonProperty("valvesFlows")]
         public List<int> ValveFlows { get; set;}
 
+        [JsonProperty("tankStatus")]
+        public List<float> TankStatus { get; set; }
+
         [JsonProperty("temperature")]
         public float ReactorTemperature { get; set; }
 
@@ -27,15 +30,17 @@ namespace Assets.Scripts.Settings
         public CycleResult()
         {
             ValveFlows = new List<int>();
+            TankStatus = new List<float>();
             ReactorTemperature = 0;
             Step = 0;
             InGameTime = 0;
             RealTime = 0;
         }
 
-        public CycleResult(List<int> valveFlows, float reactorTemperature, int step, float inGameTime, float realTime)
+        public CycleResult(List<int> valveFlows, List<float> tankStatus, float reactorTemperature, int step, float inGameTime, float realTime)
         {
             ValveFlows = valveFlows;
+            TankStatus = tankStatus;
             ReactorTemperature = reactorTemperature;
             Step = step;
             InGameTime = inGameTime;
@@ -45,7 +50,7 @@ namespace Assets.Scripts.Settings
         public static string GetHeader()
         {
             return "Cycle, Temperature, In-game time, Real time, Valve1, Valve2, Valve3, Valve4, Valve5, Valve 6,"
-                + "Valve 7, Valve 8, Valve 9, Valve 10, Valve 11, Valve 12, Valve 13";
+                + "Valve 7, Valve 8, Valve 9, Valve 10, Valve 11, Valve 12, Valve 13, Tank 1, Tank 2, Tank 3, Tank 4";
         }
 
         public string ToCSV()
@@ -54,7 +59,8 @@ namespace Assets.Scripts.Settings
                 + "," + ReactorTemperature.ToString()
                 + "," + InGameTime.ToString()
                 + "," + RealTime.ToString()
-                + "," + string.Join(",", ValveFlows);
+                + "," + string.Join(",", ValveFlows)
+                + "," + string.Join(",", TankStatus);
         }
     }
 }

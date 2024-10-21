@@ -10,6 +10,7 @@ public class TableManager : MonoBehaviour
 {
     private GameObject _flowColumn;
     private GameObject _temperatureColumn;
+    [SerializeField] private GameObject _tableArea;
     [SerializeField] private GameObject _tableRowPrefab;
     [SerializeField] private float _rowHeight = 28f;
     [SerializeField] private Color[] _colours = {
@@ -57,6 +58,10 @@ public class TableManager : MonoBehaviour
                 AddTableValue(flowString, temperature.ToString(), bad);
             }
         }
+
+        // Set the height of the table area
+        RectTransform rect = _tableArea.GetComponent<RectTransform>();
+        rect.sizeDelta = new Vector2(rect.sizeDelta.x, (flows.Count + 1) * _rowHeight);
     }
 
     void AddTableValue(string flow, string temperature, Color? color = null)

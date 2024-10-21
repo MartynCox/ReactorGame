@@ -13,6 +13,7 @@ public class MenuController : MonoBehaviour
     [SerializeField] private UnityEngine.UI.Button _skipVideoButton;
     [SerializeField] private UnityEngine.UI.Button _submitWorkerIDButton;
     [SerializeField] private Transform _video;
+    [SerializeField] private Transform _idArea;
     [SerializeField] private Transform _hidenWhenVideo;
 
     private void Start()
@@ -22,15 +23,20 @@ public class MenuController : MonoBehaviour
             SetScenario();
         }
 
-        // First get the mturk worker id
-        _video.gameObject.SetActive(false);
-        _submitWorkerIDButton.interactable = false;
-
         if (!ScenarioController.Instance.HasSettings()
             || ScenarioController.Instance.GetScenarioIndex() == 0)
         {
+            // First get the mturk worker id
+            _video.gameObject.SetActive(false);
+            _submitWorkerIDButton.interactable = false;
+
             // Show the video
             StartCoroutine(WaitForVideo());
+        } else
+        {
+            // Hide all dialogue
+            _video.gameObject.SetActive(false);
+            _idArea.gameObject.SetActive(false);
         }
     }
 

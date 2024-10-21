@@ -101,6 +101,16 @@ public class Tank : MonoBehaviour
     {
         return _capacity;
     }
+
+    public float GetMaxCapacity()
+    {
+        return _maxCapacity;
+    }
+
+    public bool GetIsOverflowed()
+    {
+        return _isOverflowed;
+    }
     
     public void AddInputValve(Valve valve)
     {

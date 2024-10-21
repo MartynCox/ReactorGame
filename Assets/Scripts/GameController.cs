@@ -21,6 +21,8 @@ public class GameController : MonoBehaviour
 
     [SerializeField]
     private List<Valve> _allValves;
+    [SerializeField]
+    private List<Tank> _allTanks;
 
     private ScenarioResult _resultOutput;
 
@@ -126,15 +128,30 @@ public class GameController : MonoBehaviour
 
     private void RecordResults(float reactorTemp)
     {
+        // Get the flow of each valve
         List<int> flows = new List<int>();
         foreach (Valve v in _allValves)
         {
             flows.Add(v.GetFlowRate());
         }
 
+        // Get the capacity of each tank
+        List<float> tankFullness = new List<float>();
+        foreach (Tank t in _allTanks)
+        {
+            float fullness = t.GetCapacity();
+            if (t.GetIsOverflowed() && fullness.Equals(t.GetMaxCapacity()))
+            {
+                fullness = -1;
+            }
+            tankFullness.Add(fullness);
+            
+        }
+
+        // Record results for the cycle
         float realTime = Time.realtimeSinceStartup - _lastStepTimestamp;
         float inGameTime = _stepTime - _timeUntilAdvance;
-        CycleResult record = new CycleResult(flows, reactorTemp, _currentStep, inGameTime, realTime);
+        CycleResult record = new CycleResult(flows, tankFullness, reactorTemp, _currentStep, inGameTime, realTime);
         _resultOutput.AddRecord(record);
     }
 }

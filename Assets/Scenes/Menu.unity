@@ -1662,6 +1662,7 @@ MonoBehaviour:
   _skipVideoButton: {fileID: 618763493}
   _submitWorkerIDButton: {fileID: 164033281}
   _video: {fileID: 812557889}
+  _idArea: {fileID: 1709237810}
   _hidenWhenVideo: {fileID: 1528259914}
 --- !u!4 &675309762
 Transform:
